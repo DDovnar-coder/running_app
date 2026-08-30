@@ -5,4 +5,10 @@
 //  Created by DDovnar on 07.08.2026.
 //
 
-import Foundation
+import SwiftUI
+
+struct Empty: View {
+    var body: some View {
+        Text("emtpy")
+    }
+}
