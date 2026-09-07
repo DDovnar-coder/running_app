@@ -1,8 +1,9 @@
-//
-//  RunModel.swift
-//  running app
-//
-//  Created by DDovnar on 02.09.2026.
-//
+import GRDB
+import SwiftData
+import SwiftUI
 
-import Foundation
+struct RunModel: Identifiable {
+    var id: UUID = UUID()
+    var startDate: Date
+    var duration: TimeInterval
+}

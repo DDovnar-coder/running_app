@@ -1,7 +1,8 @@
 import SwiftUI
 
 struct WelcomeView: View {
-    var onContinue: () -> Void
+//    var onContinue: () -> Void
+    @Environment(AppRouter.self) private var router
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -28,7 +29,7 @@ struct WelcomeView: View {
             Spacer()
             
             Button(action: {
-                onContinue()
+                router.completeWelcome()
             }) {
                 PrimaryButtonLabel(title: "welcome.continue")
             }
@@ -42,5 +43,5 @@ struct WelcomeView: View {
 }
 
 #Preview {
-    WelcomeView(onContinue: {})
+    WelcomeView()
 }

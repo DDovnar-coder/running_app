@@ -1,8 +1,15 @@
-//
-//  Run.swift
-//  running app
-//
-//  Created by DDovnar on 31.08.2026.
-//
-
+import SwiftUI
 import Foundation
+import SwiftData
+
+@Model
+final class Run{
+    var startDate: Date
+    var duration: TimeInterval
+    
+    init(startDate: Date, duration: TimeInterval) {
+        self.startDate = startDate
+        self.duration = duration
+    }
+    
+}

@@ -20,7 +20,9 @@ struct DataInputView: View {
     
     @FocusState private var focusedField: Field?
     
-    var onContinue: () -> Void
+    @Environment(AppRouter.self) var router
+    
+//    var onContinue: () -> Void
     
     private var ageError: LocalizedStringKey? {
         if age.isEmpty {
@@ -93,9 +95,11 @@ struct DataInputView: View {
             Button(action: saveAndContinue){
                 PrimaryButtonLabel(title: "datainput.continue.save")
             }
-            .opacity(isFormValid ? 1 : 0.5)
+            .disabled(!isFormValid)
+            .buttonStyle(.borderedProminent)
             .padding(.horizontal, 20)
             .padding(.bottom, 20)
+            .controlSize(.large)
         }
         .navigationBarBackButtonHidden(true)
         .onAppear {
@@ -128,7 +132,7 @@ struct DataInputView: View {
         savedWeight = weight
         savedGender = gender
         hasCompletedProfile = true
-        onContinue()
+        router.completeProfile()
     }
 }
 

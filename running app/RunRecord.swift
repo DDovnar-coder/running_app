@@ -1,8 +1,10 @@
-//
-//  RunRecord.swift
-//  running app
-//
-//  Created by DDovnar on 02.09.2026.
-//
-
 import Foundation
+import GRDB
+
+struct RunRecord: Codable, FetchableRecord, PersistableRecord {
+    var id: Int64?
+    var startDate: Date
+    var duration: TimeInterval
+    
+    static let databaseTableName = "run"
+}

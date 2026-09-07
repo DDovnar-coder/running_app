@@ -1,8 +1,7 @@
-//
-//  RunRepository.swift
-//  running app
-//
-//  Created by DDovnar on 02.09.2026.
-//
 
 import Foundation
+
+protocol RunRepository {
+    func save(_ run: RunModel) throws
+    func fetchAll() throws -> [RunModel]
+}

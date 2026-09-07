@@ -16,6 +16,10 @@ class WorkoutTimer {
     private var timer: Timer?
     
     private(set) var elapsedTime: TimeInterval = 0
+    
+    var workoutStartTimer: Date? {
+        startTime
+    }
         
     func start() {
         startTime = Date()

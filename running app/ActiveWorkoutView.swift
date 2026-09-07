@@ -6,13 +6,19 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct ActiveWorkoutView: View {
-    var time: String = "13:00"
     @State private var isPaused: Bool = false
     @State private var showEndConfirmation: Bool = false
     @State private var workoutTimer: WorkoutTimer = WorkoutTimer()
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.modelContext) private var modelContext
+
+    private var repository: RunRepository {
+//      SwiftDataRunRepository(modelContext: modelContext)
+        GRDBRunRepository(database: AppDatabase.shared)
+    }
     
     var body: some View {
         VStack {
@@ -34,10 +40,6 @@ struct ActiveWorkoutView: View {
             
             Spacer()
             
-//            Button(action: {workoutTimer.start()}) {
-//                Text("Start")
-//            }
-            
             HStack(spacing: 24) {
                 Button(action: {
                     if isPaused {
@@ -54,6 +56,7 @@ struct ActiveWorkoutView: View {
                         .background(Circle().fill(.orange))
                 }
                 HoldToStopButton(onComplete: {
+                    saveRun()
                     workoutTimer.stop()
                     dismiss()
                 })
@@ -67,6 +70,12 @@ struct ActiveWorkoutView: View {
         .onAppear {
             workoutTimer.start()
         }
+    }
+    
+    private func saveRun() {
+        guard let start = workoutTimer.workoutStartTimer else { return }
+        let run = RunModel(startDate: start, duration: workoutTimer.elapsedTime)
+        try? repository.save(run)
     }
 }
 
