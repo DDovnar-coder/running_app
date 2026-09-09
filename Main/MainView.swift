@@ -4,10 +4,10 @@ import SwiftData
 
 struct MainView: View {
     //    @Query(sort: \Run.startDate, order: .reverse) private var runs: [Run]
-    @State private var path = NavigationPath()
     @State private var showCountdown: Bool = false
     @State private var runs: [RunModel] = []
     @Environment(\.modelContext) private var modelContext
+    @Environment(AppRouter.self) private var router
     
     private var repository: RunRepository {
 //        SwiftDataRunRepository(modelContext: modelContext)
@@ -18,7 +18,7 @@ struct MainView: View {
 //        NavigationStack(path: $path) {
             VStack {
                 Button("MainView.profile") {
-                    path = NavigationPath([AppDestination.profile])
+                    router.push(.profile)
                 }
                 
                 Button("MainView.workout") {
@@ -27,8 +27,8 @@ struct MainView: View {
                 .fullScreenCover(isPresented: $showCountdown) {
                     CountdownView(onFinished: {
                         showCountdown = false
-                        
-                        path.append(AppDestination.workout)
+                        router.push(.workout)
+//                        path.append(AppDestination.workout)
                     })
                 }
                 

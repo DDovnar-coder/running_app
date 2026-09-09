@@ -41,35 +41,38 @@ final class AppRouter {
     func push(_ destination: AppDestination) {
         path.append(destination)
     }
+    
+    func pop() {
+        path.removeLast()
+    }
 }
 
 
 @main
 struct running_appApp: App {
- 
     @State private var router = AppRouter()
     
     var body: some Scene {
         WindowGroup {
-          
-            
-            
             NavigationStack(path: $router.path) {
-                switch router.phase {
+                Group {
+                    switch router.phase {
                     case .welcome:
                         WelcomeView()
                     case .profileSetup:
-                        DataInputView()
+                        DataInputView(mode: .onboarding)
                     case .main:
                         MainView()
+                    }
+                    
                 }
-            }
-            .navigationDestination(for: AppDestination.self) { destination in
-                switch destination {
-                case .workout:
-                    ActiveWorkoutView()
-                case .profile:
-                    DataInputView()
+                .navigationDestination(for: AppDestination.self) { destination in
+                    switch destination {
+                    case .workout:
+                        ActiveWorkoutView()
+                    case .profile:
+                        DataInputView(mode: .edit)
+                    }
                 }
             }
         }

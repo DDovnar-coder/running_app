@@ -4,6 +4,11 @@ enum Field {
     case weight, height, age
 }
 
+enum DataInputMode {
+    case onboarding
+    case edit
+}
+
 struct DataInputView: View {
     @AppStorage("user_age") var savedAge: String = ""
     @AppStorage("user_height") var savedHeight: String = ""
@@ -22,7 +27,7 @@ struct DataInputView: View {
     
     @Environment(AppRouter.self) var router
     
-//    var onContinue: () -> Void
+     let mode: DataInputMode
     
     private var ageError: LocalizedStringKey? {
         if age.isEmpty {
@@ -39,7 +44,7 @@ struct DataInputView: View {
         if height.isEmpty {
             return LocalizedStringKey("datainput.height.error")
         }
-
+        
         guard let heightInt = Int(height), heightInt > 0, heightInt < 300 else {
             return LocalizedStringKey("datainput.height.error")
         }
@@ -92,7 +97,9 @@ struct DataInputView: View {
                 
             }.navigationTitle("datainput.title")
             
-            Button(action: saveAndContinue){
+            Button(action: {
+                saveAndContinue()
+            }){
                 PrimaryButtonLabel(title: "datainput.continue.save")
             }
             .disabled(!isFormValid)
@@ -107,7 +114,7 @@ struct DataInputView: View {
             height = savedHeight
             weight = savedWeight
             gender = savedGender
-
+            
             let firstEmptyField: Field? = {
                 if age.isEmpty { return .age }
                 if height.isEmpty { return .height }
@@ -131,8 +138,13 @@ struct DataInputView: View {
         savedHeight = height
         savedWeight = weight
         savedGender = gender
-        hasCompletedProfile = true
-        router.completeProfile()
+        //        router.completeProfile()
+        switch mode {
+        case .onboarding:
+            router.completeProfile()
+        case .edit:
+            router.pop()
+        }
     }
 }
 
