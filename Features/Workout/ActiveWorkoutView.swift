@@ -14,11 +14,7 @@ struct ActiveWorkoutView: View {
     @State private var workoutTimer: WorkoutTimer = WorkoutTimer()
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
-
-    private var repository: RunRepository {
-//      SwiftDataRunRepository(modelContext: modelContext)
-        GRDBRunRepository(database: AppDatabase.shared)
-    }
+    let runRepository: RunRepository
     
     var body: some View {
         VStack {
@@ -75,10 +71,7 @@ struct ActiveWorkoutView: View {
     private func saveRun() {
         guard let start = workoutTimer.workoutStartTimer else { return }
         let run = RunModel(startDate: start, duration: workoutTimer.elapsedTime)
-        try? repository.save(run)
+        try? runRepository.save(run)
     }
 }
 
-#Preview {
-    ActiveWorkoutView()
-}

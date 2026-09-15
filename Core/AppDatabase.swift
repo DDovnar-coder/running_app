@@ -2,7 +2,7 @@ import Foundation
 import GRDB
 
 struct AppDatabase {
-    private let dbQueue: DatabaseQueue
+    let dbQueue: DatabaseQueue
     
     init(dbQueue: DatabaseQueue) {
         self.dbQueue = dbQueue
@@ -42,19 +42,6 @@ extension AppDatabase {
     }
     
     static let shared = AppDatabase.makeShared()
-    
-    func saveRun(_ run: RunRecord) throws {
-        try dbQueue.write { db in
-            let mutableRun = run
-            try mutableRun.insert(db)
-        }
-    }
-    
-    func fetchAllRuns() throws -> [RunRecord] {
-        try dbQueue.read { db in
-            try RunRecord.order(Column("startDate").desc).fetchAll(db)
-        }
-    }
 }
 
 

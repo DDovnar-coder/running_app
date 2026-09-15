@@ -8,16 +8,35 @@
 
 /* Begin PBXBuildFile section */
 		45667FBC304757C4009F4449 /* GRDB in Frameworks */ = {isa = PBXBuildFile; productRef = 45667FBB304757C4009F4449 /* GRDB */; };
+		45BF84583048CEAC00D4AAD4 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45BF843D3048CEAC00D4AAD4 /* Color.swift */; };
+		45BF84993050CFB900D4AAD4 /* AppDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45BF848E3050CFB900D4AAD4 /* AppDatabase.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		452FDD7130227B6A00735951 /* running app.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "running app.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		45BF843D3048CEAC00D4AAD4 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
+		45BF848E3050CFB900D4AAD4 /* AppDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDatabase.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		452FDD7330227B6A00735951 /* running app */ = {
+		45BF846A304F7BA000D4AAD4 /* Features */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = "running app";
+			path = Features;
+			sourceTree = "<group>";
+		};
+		45BF846B304F846200D4AAD4 /* Components */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Components;
+			sourceTree = "<group>";
+		};
+		45BF849E3050D51700D4AAD4 /* Resources */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		45BF84A33050D67800D4AAD4 /* App */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = App;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -37,8 +56,11 @@
 		452FDD6830227B6A00735951 = {
 			isa = PBXGroup;
 			children = (
-				452FDD7330227B6A00735951 /* running app */,
+				45BF846F304F87A700D4AAD4 /* Core */,
+				45BF846A304F7BA000D4AAD4 /* Features */,
 				452FDD7230227B6A00735951 /* Products */,
+				45BF849E3050D51700D4AAD4 /* Resources */,
+				45BF84A33050D67800D4AAD4 /* App */,
 			);
 			sourceTree = "<group>";
 		};
@@ -48,6 +70,16 @@
 				452FDD7130227B6A00735951 /* running app.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		45BF846F304F87A700D4AAD4 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				45BF846B304F846200D4AAD4 /* Components */,
+				45BF843D3048CEAC00D4AAD4 /* Color.swift */,
+				45BF848E3050CFB900D4AAD4 /* AppDatabase.swift */,
+			);
+			path = Core;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -66,7 +98,10 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				452FDD7330227B6A00735951 /* running app */,
+				45BF846A304F7BA000D4AAD4 /* Features */,
+				45BF846B304F846200D4AAD4 /* Components */,
+				45BF849E3050D51700D4AAD4 /* Resources */,
+				45BF84A33050D67800D4AAD4 /* App */,
 			);
 			name = "running app";
 			packageProductDependencies = (
@@ -129,6 +164,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				45BF84583048CEAC00D4AAD4 /* Color.swift in Sources */,
+				45BF84993050CFB900D4AAD4 /* AppDatabase.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

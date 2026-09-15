@@ -11,6 +11,7 @@ struct FeatureRow: View {
                 .resizable()
                 .frame(width: 40, height: 40)
                 .padding(.trailing)
+//                .foregroundStyle(.tint)
             
             VStack(alignment: .leading) {
                 Text(title)

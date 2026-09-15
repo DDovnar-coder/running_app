@@ -43,6 +43,7 @@ final class AppRouter {
     }
     
     func pop() {
+        guard !path.isEmpty else { return }
         path.removeLast()
     }
 }
@@ -51,6 +52,15 @@ final class AppRouter {
 @main
 struct running_appApp: App {
     @State private var router = AppRouter()
+    //    let runRepository: RunRepository = GRDBRunRepository(database: .shared)
+    let runRepository: RunRepository
+    let modelContainer: ModelContainer
+    
+    init() {
+        let container = try! ModelContainer(for: Run.self)
+        self.modelContainer = container
+        self.runRepository = SwiftDataRunRepository(modelContext: container.mainContext)
+    }
     
     var body: some Scene {
         WindowGroup {
@@ -62,14 +72,14 @@ struct running_appApp: App {
                     case .profileSetup:
                         DataInputView(mode: .onboarding)
                     case .main:
-                        MainView()
+                        MainView(runRepository: runRepository)
                     }
                     
                 }
                 .navigationDestination(for: AppDestination.self) { destination in
                     switch destination {
                     case .workout:
-                        ActiveWorkoutView()
+                        ActiveWorkoutView(runRepository: runRepository)
                     case .profile:
                         DataInputView(mode: .edit)
                     }
@@ -77,6 +87,5 @@ struct running_appApp: App {
             }
         }
         .environment(router)
-        .modelContainer(for: Run.self)
     }
 }

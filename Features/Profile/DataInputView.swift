@@ -100,7 +100,8 @@ struct DataInputView: View {
             Button(action: {
                 saveAndContinue()
             }){
-                PrimaryButtonLabel(title: "datainput.continue.save")
+                Text("datainput.continue.save")
+                    .frame(maxWidth: .infinity)
             }
             .disabled(!isFormValid)
             .buttonStyle(.borderedProminent)
@@ -138,7 +139,6 @@ struct DataInputView: View {
         savedHeight = height
         savedWeight = weight
         savedGender = gender
-        //        router.completeProfile()
         switch mode {
         case .onboarding:
             router.completeProfile()

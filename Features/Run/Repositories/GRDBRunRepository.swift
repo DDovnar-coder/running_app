@@ -10,11 +10,17 @@ final class GRDBRunRepository: RunRepository {
     
     func save(_ run: RunModel) throws {
         let record = RunRecord(id: nil, startDate: run.startDate, duration: run.duration)
-        try database.saveRun(record)
+        
+        try database.dbQueue.write { db in
+            try record.insert(db)
+        }
     }
     
     func fetchAll() throws -> [RunModel] {
-        let records = try database.fetchAllRuns()
+        let records = try database.dbQueue.read { db in
+            try RunRecord.order(Column("startDate").desc).fetchAll(db)
+        }
+        
         return records.map { RunModel(startDate: $0.startDate, duration: $0.duration) }
     }
 }
