@@ -94,48 +94,72 @@ struct WorkoutSummaryView: View {
             
             ScrollView {
                 VStack(alignment: .leading, spacing: 25) {
-                    VStack(alignment: .leading, spacing: 10) {
-                        Text("workoutSummaryView.data.workout")
-                            .font(.title2)
-                            .fontWeight(.bold)
+                    
+                    VStack(alignment: .leading, spacing: 24) {
                         if let run {
-                            HStack(spacing: 15) {
+                            VStack(alignment: .leading, spacing: 12) {
+                                Text("workoutSummaryView.data.workout")
+                                    .font(.subheadline)
+                                    .foregroundStyle(Color(hex: "89938D"))
+                                
                                 VStack(alignment: .leading, spacing: 4) {
-                                    Text("workoutSummaryView.data.timeRun")
-                                        .font(.footnote)
-                                        .foregroundStyle(.gray)
                                     Text("\(Duration.seconds(run.duration).formatted())")
-                                        .font(.title3)
-                                        .fontWeight(.semibold)
+                                        .font(.largeTitle)
+                                        .fontWeight(.bold)
+                                        .foregroundStyle(Color(hex: "202923"))
+                                    
+                                    Text("workoutSummaryView.data.timeRun")                           .font(.subheadline)
+                                        .foregroundStyle(Color(hex: "89938D"))
+                                }
+                            }
+                            
+                            Divider()
+                                .background(Color(hex: "89938D").opacity(0.2))
+                            
+                            HStack(alignment: .top) {
+                                VStack(alignment: .leading, spacing: 12) {
+                                    Text("5.24")
+                                        .font(.title2)
+                                        .fontWeight(.bold)
+                                        .foregroundStyle(Color(hex: "202923"))
+                                    
+                                    Text("км")
+                                        .font(.caption)
+                                        .foregroundStyle(Color(hex: "89938D"))
                                 }
                                 
                                 Spacer()
                                 
-                                Divider()
-                                    .frame(width: 1, height: 40)
-                                    .background(Color.gray.opacity(0.3))
+                                VStack(alignment: .leading, spacing: 12) {
+                                    Text("6:10")
+                                        .font(.title2)
+                                        .fontWeight(.semibold)
+                                        .foregroundStyle(Color(hex: "202023"))
+                                    
+                                    Text("мин/км")
+                                        .font(.caption)
+                                        .foregroundStyle(Color(hex: "89938D"))
+                                }
                                 
                                 Spacer()
                                 
-                                VStack(alignment: .leading, spacing: 4) {
-                                    Text("workoutSummaryView.data.calories")
-                                        .font(.footnote)
-                                        .foregroundStyle(.gray)
-                                    HStack(alignment: .firstTextBaseline, spacing: 4) {
-                                        
-                                        Text("\(run.calories)")
-                                            .font(.title3)
-                                            .fontWeight(.semibold)
-                                            
-                                        Text("workoutSummaryView.text.kcal")
-                                            .font(.headline)
-                                            .foregroundStyle(.green)
-                                    }
+                                VStack(alignment: .leading, spacing: 12) {
+                                    Text("\(run.calories)")
+                                        .font(.title2)
+                                        .fontWeight(.bold)
+                                        .foregroundStyle(Color(hex: "202923"))
                                     
+                                    Text("workoutSummaryView.text.kcal")
+                                        .font(.caption)
+                                        .foregroundStyle(Color(hex: "89938D"))
                                 }
                             }
                         }
                     }
+                    .padding(24)
+                    .background(Color.white)
+                    .cornerRadius(12)
+
                     
                     VStack(spacing: 20) {
                         HStack {
@@ -155,7 +179,6 @@ struct WorkoutSummaryView: View {
                             .font(.subheadline)
                             .foregroundColor(.gray)
                         }
-//                        .padding(.horizontal, 4)
                         
                         GeometryReader { geometry in
                             ZStack(alignment: .leading) {
@@ -285,6 +308,7 @@ struct WorkoutSummaryView: View {
             }
         }
         .padding()
+        .background(Color(hex: "F5F8F6"))
         .toolbar(.hidden, for: .navigationBar)
         .onDisappear{
             saveRating()
