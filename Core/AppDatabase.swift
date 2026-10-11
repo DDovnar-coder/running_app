@@ -17,6 +17,20 @@ struct AppDatabase {
                 t.autoIncrementedPrimaryKey("id")
                 t.column("startDate", .datetime).notNull()
                 t.column("duration", .double).notNull()
+                t.column("calories", .integer).notNull().defaults(to: 0)
+            }
+        }
+        
+        migrator.registerMigration("addUuidToRun") { db in
+            try db.alter(table: "run") { t in
+                t.add(column: "uuid", .text).notNull().defaults(to: "")
+            }
+        }
+        
+        migrator.registerMigration("v2_addComfortAndNote") { db in
+            try db.alter(table: "run") { t in
+                t.add(column: "comfort", .integer)
+                t.add(column: "note", .text)
             }
         }
         

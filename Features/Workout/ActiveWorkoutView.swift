@@ -12,6 +12,7 @@ struct ActiveWorkoutView: View {
     @State private var isPaused: Bool = false
     @State private var showEndConfirmation: Bool = false
     @State private var workoutTimer: WorkoutTimer = WorkoutTimer()
+    @Environment(AppRouter.self) private var router
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
     let runRepository: RunRepository
@@ -52,9 +53,10 @@ struct ActiveWorkoutView: View {
                         .background(Circle().fill(.orange))
                 }
                 HoldToStopButton(onComplete: {
-                    saveRun()
+                    let id = saveRun()
                     workoutTimer.stop()
-                    dismiss()
+                    router.pop()
+                    if let id { router.push(.summary(id: id)) }
                 })
                     
             }
@@ -68,10 +70,15 @@ struct ActiveWorkoutView: View {
         }
     }
     
-    private func saveRun() {
-        guard let start = workoutTimer.workoutStartTimer else { return }
-        let run = RunModel(startDate: start, duration: workoutTimer.elapsedTime)
+    private func saveRun() -> UUID? {
+        let weightString = UserDefaults.standard.string(forKey: "user_weight") ?? ""
+        let weightKg = Double(weightString) ?? 0
+        let calories = calculateCalories(duration: workoutTimer.elapsedTime, weightKg: weightKg)
+        
+        guard let start = workoutTimer.workoutStartTimer else { return nil }
+        let run = RunModel(startDate: start, duration: workoutTimer.elapsedTime, calories: Int(calories.rounded()))
         try? runRepository.save(run)
+        return run.id
     }
 }
 

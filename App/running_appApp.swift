@@ -4,6 +4,7 @@ import SwiftData
 enum AppDestination: Hashable {
     case workout
     case profile
+    case summary(id: UUID)
 }
 
 enum AppPhase: String, Hashable {
@@ -52,15 +53,15 @@ final class AppRouter {
 @main
 struct running_appApp: App {
     @State private var router = AppRouter()
-    //    let runRepository: RunRepository = GRDBRunRepository(database: .shared)
-    let runRepository: RunRepository
-    let modelContainer: ModelContainer
+    let runRepository: RunRepository = GRDBRunRepository(database: .shared)
+    //    let runRepository: RunRepository
+    //    let modelContainer: ModelContainer
     
-    init() {
-        let container = try! ModelContainer(for: Run.self)
-        self.modelContainer = container
-        self.runRepository = SwiftDataRunRepository(modelContext: container.mainContext)
-    }
+    //    init() {
+    //        let container = try! ModelContainer(for: Run.self)
+    //        self.modelContainer = container
+    //        self.runRepository = SwiftDataRunRepository(modelContext: container.mainContext)
+    //    }
     
     var body: some Scene {
         WindowGroup {
@@ -82,6 +83,8 @@ struct running_appApp: App {
                         ActiveWorkoutView(runRepository: runRepository)
                     case .profile:
                         DataInputView(mode: .edit)
+                    case .summary(let id):
+                        WorkoutSummaryView(runRepository: runRepository, runID: id)
                     }
                 }
             }

@@ -4,6 +4,7 @@ import SwiftData
 struct MainView: View {
     @State private var showCountdown: Bool = false
     @State private var runs: [RunModel] = []
+    @State private var runToDelete: RunModel?
     @Environment(\.modelContext) private var modelContext
     @Environment(AppRouter.self) private var router
     
@@ -40,8 +41,14 @@ struct MainView: View {
                 List {
                     Section {
                         ForEach(runs) { run in
-                            Text("\(run.startDate.formatted(.dateTime.day().month())) — \(Duration.seconds(run.duration).formatted())")
+                            Text("\(run.startDate.formatted(.dateTime.day().month().hour().minute())) — \(Duration.seconds(run.duration).formatted())")
                                 .listRowInsets(EdgeInsets())
+                        }
+                        .onDelete{ indexSet in
+                            if let index = indexSet.first {
+                                runToDelete = runs[index]
+                            }
+                            
                         }
                     } header: {
                         Text("MainView.history")
@@ -52,6 +59,30 @@ struct MainView: View {
                 }
                 .listStyle(.plain)
                 .scrollContentBackground(.hidden)
+                .confirmationDialog(
+                    "mainview.delete.title",
+                    isPresented: Binding(
+                        get: { runToDelete != nil },
+                        set: { isShown in
+                            if !isShown {
+                                runToDelete = nil
+                            }
+                        }
+                    ),
+                    titleVisibility: .visible,
+                    presenting: runToDelete
+                ) { run in
+                    Button("run.delete.confirm", role: .destructive) {
+                        do {
+                            try runRepository.delete(id: run.id)
+                            loadRuns()
+                        } catch {
+                            print(error)
+                        }
+                    }
+                    Button("run.delete.cancel", role: .cancel) { }
+                }
+                    
             }
             
             
@@ -74,5 +105,6 @@ struct MainView: View {
     
     private func loadRuns() {
         runs = (try? runRepository.fetchAll()) ?? []
+        print(runs.map(\.comfort))
     }
 }
