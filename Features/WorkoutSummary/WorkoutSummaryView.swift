@@ -183,15 +183,19 @@ struct WorkoutSummaryView: View {
                         GeometryReader { geometry in
                             ZStack(alignment: .leading) {
                                 Capsule()
-                                    .fill(Color(white: 0.15))
+                                    .fill(Color(hex: "E9F0EB"))
                                     .frame(height: 44)
+                                    .overlay(
+                                        Capsule()
+                                              .stroke(Color(hex: "C4C8C5"), lineWidth: 2)
+                                    )
                                 
                                 HStack(spacing: 0) {
                                     ForEach(0..<totalSteps, id: \.self) { index in
                                         Text(stepLabels[index])
                                             .font(.system(.subheadline, design: .rounded))
                                             .fontWeight(.medium)
-                                            .foregroundColor(currentStep == index ? .clear : .gray)
+                                            .foregroundColor(currentStep == index ? .clear : Color(hex: "78847C"))
                                             .frame(width: geometry.size.width / CGFloat(totalSteps), height: 44)
                                     }
                                 }
@@ -208,7 +212,7 @@ struct WorkoutSummaryView: View {
                                 .frame(width: stepWidth - 4, height: 40)
                                 .background(
                                     Capsule()
-                                        .fill(Color.green)
+                                        .fill(Color(hex: "35C866"))
                                 )
                                 .padding(.leading, 2)
                                 .offset(x: CGFloat(currentStep) * stepWidth)
