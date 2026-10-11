@@ -161,7 +161,7 @@ struct WorkoutSummaryView: View {
                     .cornerRadius(12)
 
                     
-                    VStack(spacing: 20) {
+                    VStack(alignment: .leading,spacing: 20) {
                         HStack {
                             HStack(spacing: 6) {
                                 Text("😐")
@@ -233,6 +233,9 @@ struct WorkoutSummaryView: View {
                             )
                         }
                         .frame(height: 44)
+                        
+                        Text("workoutSummaryView.user-feedback")
+                            .font(.body)
                         
                         FlowLayout(spacing: 8) {
                             ForEach(phrases, id: \.self) { key in
