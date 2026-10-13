@@ -149,7 +149,7 @@ struct WorkoutSummaryView: View {
                                         .fontWeight(.bold)
                                         .foregroundStyle(Color(hex: "202923"))
                                     
-                                    Text("workoutSummaryView.text.kcal")
+                                    Text("workoutSummaryView.data.calories")
                                         .font(.caption)
                                         .foregroundStyle(Color(hex: "89938D"))
                                 }
@@ -253,17 +253,67 @@ struct WorkoutSummaryView: View {
                             }
                         }
                         
+                        VStack(alignment: .leading, spacing: 15) {
+                            Text("workoutSummaryView.note.title")
+                                .font(.subheadline)
+                            
+                            TextField("workoutSummaryView.note.placeholder", text: $ownThought,prompt: Text("workoutSummaryView.note.placeholder").foregroundStyle(Color(hex: "89938D")), axis: .vertical)
+                                .lineLimit(1...4)
+                                .fixedSize(horizontal: false, vertical: true)
+                                .font(.subheadline)
+                                .focused($isNoteFocused)
+                                .overlay(
+                                    Rectangle()
+                                        .frame(height: 1.5)
+                                        .foregroundStyle(isNoteFocused ? .blue : .clear),
+                                    alignment: .bottom
+                                )
+                        }
+                        .padding()
+                        .background(.white)
+                        .cornerRadius(12)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 12)
+                                .stroke(Color(hex: "89938D"), lineWidth: 1)
+                        )
                         
-                        TextField("workoutSummaryView.note.placeholder", text: $ownThought,prompt: Text("workoutSummaryView.note.placeholder").foregroundStyle(Color.white.opacity(0.4)), axis: .vertical)
-                            .lineLimit(1...4)
-                            .fixedSize(horizontal: false, vertical: true)
-                            .font(.subheadline)
-                            .foregroundStyle(.white)
-                            .padding(.horizontal, 16)
-                            .padding(.vertical, 14)
-                            .background(Color(red: 0.15, green: 0.15, blue: 0.15))
-                            .cornerRadius(12)
-                            .focused($isNoteFocused)
+                        HStack {
+                            Spacer()
+                            
+                            if !isNoteFocused {
+                                Button(action: { showDeleteConfirmation = true }) {
+                                    HStack(spacing: 8) {
+                                        Text("workoutSummaryView.delete.button")
+                                            .fontWeight(.semibold)
+                                        Image(systemName: "trash.fill")
+                                            .font(.title3)
+                                    }
+                                    .frame(maxWidth: .infinity)
+                                }
+                                .foregroundStyle(.red)
+                                .confirmationDialog(
+                                    "workoutSummaryView.delete.confirm.title",
+                                    isPresented: $showDeleteConfirmation,
+                                    titleVisibility: .visible,
+                                ) {
+                                    Button("workoutSummaryView.delete.confirmation.button", role: .destructive) {
+                                        do {
+                                            guard let run else { return }
+                                            try runRepository.delete(id: run.id)
+                                            isDeleted = true
+                                            router.pop()
+                                        } catch {
+                                            print("delete failed:", error)
+                                        }
+                                    }
+                                    Button("workoutSummaryView.cancel.button", role: .cancel) { }
+                                } message: {
+                                    Text("workoutSummaryView.delete.confirm.message")
+                                }
+                                
+                            }
+                            Spacer()
+                        }
                     }
                 }
                 .contentShape(Rectangle())
@@ -272,47 +322,6 @@ struct WorkoutSummaryView: View {
             }
             .scrollBounceBehavior(.basedOnSize)
             
-        }
-        .safeAreaInset(edge: .bottom) {
-            HStack {
-                Spacer()
-                
-                if !isNoteFocused {
-                    Button(action: { showDeleteConfirmation = true }) {
-                        HStack(spacing: 8) {
-                            Text("workoutSummaryView.delete.button")
-                                .fontWeight(.semibold)
-                            Image(systemName: "trash.fill")
-                                .font(.title3)
-                        }
-                        .frame(maxWidth: .infinity)
-                    }
-                    .buttonStyle(.borderedProminent)
-                    .controlSize(.large)
-                    .tint(.black)
-                    .confirmationDialog(
-                        "workoutSummaryView.delete.confirm.title",
-                        isPresented: $showDeleteConfirmation,
-                        titleVisibility: .visible,
-                    ) {
-                        Button("workoutSummaryView.delete.confirmation.button", role: .destructive) {
-                            do {
-                                guard let run else { return }
-                                try runRepository.delete(id: run.id)
-                                isDeleted = true
-                                router.pop()
-                            } catch {
-                                print("delete failed:", error)
-                            }
-                        }
-                        Button("workoutSummaryView.cancel.button", role: .cancel) { }
-                    } message: {
-                        Text("workoutSummaryView.delete.confirm.message")
-                    }
-                    
-                }
-                Spacer()
-            }
         }
         .padding()
         .background(Color(hex: "F5F8F6"))
@@ -328,7 +337,6 @@ struct WorkoutSummaryView: View {
             }
         }
         
-        Spacer()
     }
     
     private func triggerHapticFeedback() {
