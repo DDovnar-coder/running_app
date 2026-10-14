@@ -10,6 +10,7 @@ final class Run{
     var comfort: Int?
     var note: String?
     
+    
     init(startDate: Date, duration: TimeInterval, calories: Int, comfort: Int?, note: String?) {
         self.startDate = startDate
         self.duration = duration

@@ -34,6 +34,12 @@ struct AppDatabase {
             }
         }
         
+        migrator.registerMigration("v3_addChips") { db in
+            try db.alter(table: "run") { t in
+                t.add(column: "chips", .text)
+            }
+        }
+        
         return migrator
     }
 }

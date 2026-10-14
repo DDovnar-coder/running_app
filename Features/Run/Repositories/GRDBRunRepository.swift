@@ -16,12 +16,10 @@ final class GRDBRunRepository: RunRepository {
         }
     }
     
-    func fetchLatestRun() throws -> RunModel? {
+    func fetch(id: RunModel.ID) throws -> RunModel? {
         let record = try database.dbQueue.read { db in
-            try RunRecord.order(Column("startDate").desc).fetchOne(db)
+            try RunRecord.filter(Column("uuid") == id).fetchOne(db)
         }
-        
-//        return record.map { RunModel(id: $0.uuid, startDate: $0.startDate, duration: $0.duration, calories: $0.calories, comfort: $0.comfort, note: $0.note) }
         
         return record.map(RunModel.init(record:))
     }
@@ -31,18 +29,16 @@ final class GRDBRunRepository: RunRepository {
             try RunRecord.order(Column("startDate").desc).fetchAll(db)
         }
         
-//        return records.map { RunModel(id: $0.uuid, startDate: $0.startDate, duration: $0.duration, calories: $0.calories) }
         return records.map(RunModel.init(record:))
     }
     
-    func update(id: RunModel.ID, comfort: Int?, note: String?) throws {
+    func update(id: RunModel.ID, comfort: Int?, note: String?, chips: [String]) throws {
         try database.dbQueue.write { db in
-           _ = try RunRecord
-                .filter(Column("uuid") == id)
-                .updateAll(db, [
-                    Column("comfort").set(to: comfort),
-                    Column("note").set(to: note)
-                ])
+            guard var record = try RunRecord.filter(Column("uuid") == id).fetchOne(db) else { return }
+            record.comfort = comfort
+            record.chips = chips
+            record.note = note
+            try record.update(db)
         }
     }
     

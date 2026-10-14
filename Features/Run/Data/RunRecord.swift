@@ -9,6 +9,7 @@ struct RunRecord: Codable, FetchableRecord, PersistableRecord {
     var calories: Int
     var comfort: Int?
     var note: String?
+    var chips: [String]?
     
     static let databaseTableName = "run"
 }
@@ -22,5 +23,6 @@ extension RunRecord {
         calories = model.calories
         comfort = model.comfort
         note = model.note
+        chips = model.chips
     }
 }

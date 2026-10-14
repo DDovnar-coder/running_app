@@ -105,6 +105,8 @@ struct MainView: View {
     
     private func loadRuns() {
         runs = (try? runRepository.fetchAll()) ?? []
-        print(runs.map(\.comfort))
+//        print(runs.map(\.comfort))
+        print(runs.map(\.chips))
+        print(runs.map(\.note))
     }
 }

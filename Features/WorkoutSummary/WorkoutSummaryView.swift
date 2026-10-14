@@ -38,21 +38,18 @@ struct WorkoutSummaryView: View {
     @State private var selectedChips: Set<String> = []
     @State private var ownThought = ""
     
+    private var selectedChipKeys: [String] {
+        phrases.filter { selectedChips.contains($0) }
+    }
+    
     private var note: String? {
-        let localizedPhrases = phrases
-            .filter { selectedChips.contains($0) }
-            .map { NSLocalizedString($0, comment: "") }
-        
         let trimmedThought = ownThought.trimmingCharacters(in: .whitespacesAndNewlines)
         
-        var finalComponents = localizedPhrases
-        if !trimmedThought.isEmpty {
-            finalComponents.append(trimmedThought)
+        if trimmedThought.isEmpty {
+            return nil
         }
         
-        guard !finalComponents.isEmpty else { return nil }
-        
-        return finalComponents.joined(separator: ", ")
+        return trimmedThought
     }
     
     var body: some View {
@@ -118,7 +115,7 @@ struct WorkoutSummaryView: View {
                             
                             HStack(alignment: .top) {
                                 VStack(alignment: .leading, spacing: 12) {
-                                    Text("5.24")
+                                    Text("-")
                                         .font(.title2)
                                         .fontWeight(.bold)
                                         .foregroundStyle(Color(hex: "202923"))
@@ -131,7 +128,7 @@ struct WorkoutSummaryView: View {
                                 Spacer()
                                 
                                 VStack(alignment: .leading, spacing: 12) {
-                                    Text("6:10")
+                                    Text("-")
                                         .font(.title2)
                                         .fontWeight(.semibold)
                                         .foregroundStyle(Color(hex: "202023"))
@@ -298,8 +295,7 @@ struct WorkoutSummaryView: View {
                                 ) {
                                     Button("workoutSummaryView.delete.confirmation.button", role: .destructive) {
                                         do {
-                                            guard let run else { return }
-                                            try runRepository.delete(id: run.id)
+                                            try runRepository.delete(id: runID)
                                             isDeleted = true
                                             router.pop()
                                         } catch {
@@ -331,7 +327,7 @@ struct WorkoutSummaryView: View {
         }
         .task {
             do {
-                self.run = try runRepository.fetchLatestRun()
+                self.run = try runRepository.fetch(id: runID)
             } catch {
                 print("Failed to fetch latest run: \(error)")
             }
@@ -347,7 +343,7 @@ struct WorkoutSummaryView: View {
     private func saveRating() {
         guard !isDeleted else { return }
         do {
-            try runRepository.update(id: runID, comfort: hasRated ? currentStep + 1 : nil, note: note)
+            try runRepository.update(id: runID, comfort: hasRated ? currentStep + 1 : nil, note: note, chips: selectedChipKeys)
         } catch {
             print("update failed:", error)
         }

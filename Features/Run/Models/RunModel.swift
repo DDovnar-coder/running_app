@@ -9,6 +9,7 @@ struct RunModel: Identifiable {
     var calories: Int
     var comfort: Int?
     var note: String?
+    var chips: [String] = []
 }
 
 extension RunModel {
@@ -19,6 +20,7 @@ extension RunModel {
         calories = record.calories
         comfort = record.comfort
         note = record.note
+        chips = record.chips ?? []
     }
 }
 

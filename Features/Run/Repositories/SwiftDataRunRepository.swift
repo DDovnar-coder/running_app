@@ -14,16 +14,6 @@ final class SwiftDataRunRepository: RunRepository {
         try modelContext.save()
     }
     
-    func fetchLatestRun() throws -> RunModel? {
-        var descriptor = FetchDescriptor<Run>(
-            sortBy: [SortDescriptor(\.startDate, order: .reverse)]
-        )
-        descriptor.fetchLimit = 1
-        let record = try modelContext.fetch(descriptor).first
-        return record.map{ RunModel(startDate: $0.startDate, duration: $0.duration, calories: $0.calories)
-        }
-    }
-    
     func fetchAll() throws -> [RunModel] {
         let descriptor = FetchDescriptor<Run>(
             sortBy: [SortDescriptor(\.startDate, order: .reverse)]
@@ -33,8 +23,12 @@ final class SwiftDataRunRepository: RunRepository {
         }
     }
     
-    func update(id: RunModel.ID, comfort: Int?, note: String?) throws {
+    func update(id: RunModel.ID, comfort: Int?, note: String?, chips: [String]) throws {
         
+    }
+    
+    func fetch(id: RunModel.ID) throws -> RunModel? {
+        return nil
     }
     
     func delete(id: RunModel.ID) throws {
