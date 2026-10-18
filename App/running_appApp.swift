@@ -5,6 +5,7 @@ enum AppDestination: Hashable {
     case workout
     case profile
     case summary(id: UUID)
+    case runDetail(id: UUID)
 }
 
 enum AppPhase: String, Hashable {
@@ -85,7 +86,10 @@ struct running_appApp: App {
                         DataInputView(mode: .edit)
                     case .summary(let id):
                         WorkoutSummaryView(runRepository: runRepository, runID: id)
+                    case .runDetail(let id):
+                        RunDetailView(runRepository: runRepository, runID: id)
                     }
+                
                 }
             }
         }

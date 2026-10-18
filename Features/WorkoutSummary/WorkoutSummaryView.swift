@@ -92,71 +92,9 @@ struct WorkoutSummaryView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 25) {
                     
-                    VStack(alignment: .leading, spacing: 24) {
-                        if let run {
-                            VStack(alignment: .leading, spacing: 12) {
-                                Text("workoutSummaryView.data.workout")
-                                    .font(.subheadline)
-                                    .foregroundStyle(Color(hex: "89938D"))
-                                
-                                VStack(alignment: .leading, spacing: 4) {
-                                    Text("\(Duration.seconds(run.duration).formatted())")
-                                        .font(.largeTitle)
-                                        .fontWeight(.bold)
-                                        .foregroundStyle(Color(hex: "202923"))
-                                    
-                                    Text("workoutSummaryView.data.timeRun")                           .font(.subheadline)
-                                        .foregroundStyle(Color(hex: "89938D"))
-                                }
-                            }
-                            
-                            Divider()
-                                .background(Color(hex: "89938D").opacity(0.2))
-                            
-                            HStack(alignment: .top) {
-                                VStack(alignment: .leading, spacing: 12) {
-                                    Text("-")
-                                        .font(.title2)
-                                        .fontWeight(.bold)
-                                        .foregroundStyle(Color(hex: "202923"))
-                                    
-                                    Text("км")
-                                        .font(.caption)
-                                        .foregroundStyle(Color(hex: "89938D"))
-                                }
-                                
-                                Spacer()
-                                
-                                VStack(alignment: .leading, spacing: 12) {
-                                    Text("-")
-                                        .font(.title2)
-                                        .fontWeight(.semibold)
-                                        .foregroundStyle(Color(hex: "202023"))
-                                    
-                                    Text("мин/км")
-                                        .font(.caption)
-                                        .foregroundStyle(Color(hex: "89938D"))
-                                }
-                                
-                                Spacer()
-                                
-                                VStack(alignment: .leading, spacing: 12) {
-                                    Text("\(run.calories)")
-                                        .font(.title2)
-                                        .fontWeight(.bold)
-                                        .foregroundStyle(Color(hex: "202923"))
-                                    
-                                    Text("workoutSummaryView.data.calories")
-                                        .font(.caption)
-                                        .foregroundStyle(Color(hex: "89938D"))
-                                }
-                            }
-                        }
+                    if let run {
+                        WorkoutStatsCard(duration: run.duration, calories: run.calories)
                     }
-                    .padding(24)
-                    .background(Color.white)
-                    .cornerRadius(12)
-
                     
                     VStack(alignment: .leading,spacing: 20) {
                         HStack {
@@ -177,62 +115,11 @@ struct WorkoutSummaryView: View {
                             .foregroundColor(.gray)
                         }
                         
-                        GeometryReader { geometry in
-                            ZStack(alignment: .leading) {
-                                Capsule()
-                                    .fill(Color(hex: "E9F0EB"))
-                                    .frame(height: 44)
-                                    .overlay(
-                                        Capsule()
-                                              .stroke(Color(hex: "C4C8C5"), lineWidth: 2)
-                                    )
-                                
-                                HStack(spacing: 0) {
-                                    ForEach(0..<totalSteps, id: \.self) { index in
-                                        Text(stepLabels[index])
-                                            .font(.system(.subheadline, design: .rounded))
-                                            .fontWeight(.medium)
-                                            .foregroundColor(currentStep == index ? .clear : Color(hex: "78847C"))
-                                            .frame(width: geometry.size.width / CGFloat(totalSteps), height: 44)
-                                    }
-                                }
-                                
-                                let stepWidth = geometry.size.width / CGFloat(totalSteps)
-                                
-                                HStack(spacing: 4) {
-                                    Image(systemName: "flame.fill")
-                                    Text(stepLabels[currentStep])
-                                }
-                                .font(.system(.callout, design: .rounded))
-                                .fontWeight(.bold)
-                                .foregroundStyle(.black)
-                                .frame(width: stepWidth - 4, height: 40)
-                                .background(
-                                    Capsule()
-                                        .fill(Color(hex: "35C866"))
-                                )
-                                .padding(.leading, 2)
-                                .offset(x: CGFloat(currentStep) * stepWidth)
-                                .animation(.spring(response: 0.25, dampingFraction: 0.75), value: currentStep)
-                            }
-                            .gesture(
-                                DragGesture(minimumDistance: 0)
-                                    .onChanged { value in
-                                        hasRated = true
-                                        let locationX = value.location.x
-                                        let progress = locationX / geometry.size.width
-                                        let calculatedStep = Int((progress * CGFloat(totalSteps)).clamped(to: 0...CGFloat(totalSteps - 1)))
-                                        if currentStep != calculatedStep {
-                                            currentStep = calculatedStep
-                                            triggerHapticFeedback()
-                                        }
-                                    }
-                            )
-                        }
-                        .frame(height: 44)
+                        ComfortSlider(currentStep: $currentStep, hasRated: $hasRated)
                         
                         Text("workoutSummaryView.user-feedback")
                             .font(.body)
+                        
                         
                         FlowLayout(spacing: 8) {
                             ForEach(phrases, id: \.self) { key in
@@ -250,29 +137,7 @@ struct WorkoutSummaryView: View {
                             }
                         }
                         
-                        VStack(alignment: .leading, spacing: 15) {
-                            Text("workoutSummaryView.note.title")
-                                .font(.subheadline)
-                            
-                            TextField("workoutSummaryView.note.placeholder", text: $ownThought,prompt: Text("workoutSummaryView.note.placeholder").foregroundStyle(Color(hex: "89938D")), axis: .vertical)
-                                .lineLimit(1...4)
-                                .fixedSize(horizontal: false, vertical: true)
-                                .font(.subheadline)
-                                .focused($isNoteFocused)
-                                .overlay(
-                                    Rectangle()
-                                        .frame(height: 1.5)
-                                        .foregroundStyle(isNoteFocused ? .blue : .clear),
-                                    alignment: .bottom
-                                )
-                        }
-                        .padding()
-                        .background(.white)
-                        .cornerRadius(12)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 12)
-                                .stroke(Color(hex: "89938D"), lineWidth: 1)
-                        )
+                        NoteField(ownThought: $ownThought, isNoteFocused: $isNoteFocused)
                         
                         HStack {
                             Spacer()
@@ -333,11 +198,6 @@ struct WorkoutSummaryView: View {
             }
         }
         
-    }
-    
-    private func triggerHapticFeedback() {
-        let impactMed = UIImpactFeedbackGenerator(style: .light)
-        impactMed.impactOccurred()
     }
     
     private func saveRating() {

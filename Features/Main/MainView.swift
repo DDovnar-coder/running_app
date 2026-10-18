@@ -29,7 +29,7 @@ struct MainView: View {
                 count: runs.count,
                 totalDuration: runs.reduce(0) { $0 + $1.duration}
             )
-
+            
             if (runs.isEmpty) {
                 Spacer()
                 Text("mainview.noHistory")
@@ -41,8 +41,14 @@ struct MainView: View {
                 List {
                     Section {
                         ForEach(runs) { run in
-                            Text("\(run.startDate.formatted(.dateTime.day().month().hour().minute())) — \(Duration.seconds(run.duration).formatted())")
-                                .listRowInsets(EdgeInsets())
+                            VStack {
+                                RecentRunsView(dateTrainingRun: "\(run.startDate.formatted(.dateTime.day().month().hour().minute()))", timeTrainingRun: "\(Duration.seconds(run.duration).formatted())",
+                                               action: { router.push(.runDetail(id: run.id)) })
+                                
+                                Divider()
+                            }
+                            .listRowSeparator(.hidden)
+                            .listRowInsets(EdgeInsets())
                         }
                         .onDelete{ indexSet in
                             if let index = indexSet.first {
@@ -82,7 +88,7 @@ struct MainView: View {
                     }
                     Button("run.delete.cancel", role: .cancel) { }
                 }
-                    
+                
             }
             
             
@@ -105,7 +111,7 @@ struct MainView: View {
     
     private func loadRuns() {
         runs = (try? runRepository.fetchAll()) ?? []
-//        print(runs.map(\.comfort))
+        print(runs.map(\.comfort))
         print(runs.map(\.chips))
         print(runs.map(\.note))
     }
