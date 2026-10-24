@@ -1,15 +1,17 @@
 import SwiftUI
 
 struct RunDetailView: View {
-    @State private var run: RunModel?
-    let runRepository: RunRepository
-    let runID: UUID
+    @State private var viewModel: RunDetailViewModel
+    
+    init(runRepository: RunRepository, runID: UUID) {
+        _viewModel = State(initialValue: RunDetailViewModel(runRepository: runRepository, runID: runID))
+    }
     
     var body: some View {
         ScrollView {
             VStack(spacing: 20) {
-                if let run {
-                    Text("\(run.startDate.formatted(.dateTime.day().month().hour().minute())) — \(Duration.seconds(run.duration).formatted())")
+                if let run = viewModel.run {
+                    if let text = viewModel.summaryText { Text(text) }
                     
                     WorkoutStatsCard(duration: run.duration, calories: run.calories)
                     
@@ -43,11 +45,7 @@ struct RunDetailView: View {
         .background(Color(hex: "F5F8F6"))
         
         .task {
-            do {
-                self.run = try runRepository.fetch(id: runID)
-            } catch {
-                print("Failed to fetch run: \(error)")
-            }
+            viewModel.fetchRun()
         }
     }
     

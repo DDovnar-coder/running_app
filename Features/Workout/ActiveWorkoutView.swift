@@ -1,27 +1,37 @@
-//
-//  ActiveWorkoutView.swift
-//  running app
-//
-//  Created by DDovnar on 17.08.2026.
-//
-
 import SwiftUI
-import SwiftData
+
+//enum EffortLevel: Int, CaseIterable {
+//    case easy = 1, moderate, hard, extreme
+//    
+//    var flameCount: Int { rawValue }
+//}
+
+private let phrases = [
+    "workoutSummaryView.note.lightLegs",
+    "workoutSummaryView.note.hot",
+    "workoutSummaryView.note.hardBreathing",
+    "workoutSummaryView.note.wantedToStop",
+    "workoutSummaryView.note.newPace",
+    "workoutSummaryView.note.feltStrong",
+    "workoutSummaryView.note.heavyLegs",
+    "workoutSummaryView.note.sideStitch",
+    "workoutSummaryView.note.greatWeather",
+    "workoutSummaryView.note.littleSleep"
+]
 
 struct ActiveWorkoutView: View {
-    @State private var isPaused: Bool = false
-    @State private var showEndConfirmation: Bool = false
-    @State private var workoutTimer: WorkoutTimer = WorkoutTimer()
+    @State private var viewModel: ActiveWorkoutViewModel
     @Environment(AppRouter.self) private var router
-    @Environment(\.dismiss) private var dismiss
-    @Environment(\.modelContext) private var modelContext
-    let runRepository: RunRepository
-    
+
+    init(runRepository: RunRepository) {
+        _viewModel = State(initialValue: ActiveWorkoutViewModel(repository: runRepository))
+    }
+
     var body: some View {
         VStack {
             Spacer()
-            VStack() {
-                Text(Duration.seconds(workoutTimer.elapsedTime).formatted())
+            VStack {
+                Text(viewModel.elapsedText)
                     .font(.system(size: 80, weight: .bold, design: .monospaced))
                 Text("activeWorkout.elapsedTime")
                     .font(.callout)
@@ -38,47 +48,24 @@ struct ActiveWorkoutView: View {
             Spacer()
             
             HStack(spacing: 24) {
-                Button(action: {
-                    if isPaused {
-                        workoutTimer.resume()
-                    } else {
-                        workoutTimer.pause()
-                    }
-                    isPaused.toggle()
-                }) {
-                    Image(systemName: isPaused ? "play.fill" : "pause.fill")
+                Button(action: { viewModel.togglePause() }) {
+                    Image(systemName: viewModel.isPaused ? "play.fill" : "pause.fill")
                         .font(.system(size: 20, weight: .bold))
                         .foregroundStyle(.white)
                         .frame(width: 64, height: 64)
                         .background(Circle().fill(.orange))
                 }
                 HoldToStopButton(onComplete: {
-                    let id = saveRun()
-                    workoutTimer.stop()
+                    let id = viewModel.finish()
                     router.pop()
                     if let id { router.push(.summary(id: id)) }
                 })
-                    
             }
-            
+
             Spacer()
         }
         .toolbar(.hidden, for: .navigationBar)
         .padding(25)
-        .onAppear {
-            workoutTimer.start()
-        }
-    }
-    
-    private func saveRun() -> UUID? {
-        let weightString = UserDefaults.standard.string(forKey: "user_weight") ?? ""
-        let weightKg = Double(weightString) ?? 0
-        let calories = calculateCalories(duration: workoutTimer.elapsedTime, weightKg: weightKg)
-        
-        guard let start = workoutTimer.workoutStartTimer else { return nil }
-        let run = RunModel(startDate: start, duration: workoutTimer.elapsedTime, calories: Int(calories.rounded()))
-        try? runRepository.save(run)
-        return run.id
+        .onAppear { viewModel.start() }
     }
 }
-

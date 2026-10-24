@@ -1,118 +1,114 @@
 import SwiftUI
 import SwiftData
 
+import SwiftUI
+
 struct MainView: View {
-    @State private var showCountdown: Bool = false
-    @State private var runs: [RunModel] = []
-    @State private var runToDelete: RunModel?
-    @Environment(\.modelContext) private var modelContext
+    @State private var viewModel: MainViewModel
+    @State private var showCountdown = false
     @Environment(AppRouter.self) private var router
     
-    let runRepository: RunRepository
+    init(runRepository: RunRepository) {
+        _viewModel = State(initialValue: MainViewModel(repository: runRepository))
+    }
     
     var body: some View {
-        VStack(alignment: .leading) {
-            Button(action: {showCountdown = true}) {
-                Text("MainView.workout")
-                    .frame(maxWidth: .infinity)
+        VStack(alignment: .center) {
+            HStack(alignment: .top) {
+                Text("mainview.main-title")
+                    .font(.title)
+                    .fontWeight(.medium)
+                
+                Spacer()
+                
+                Button {
+                    router.push(.profile)
+                } label: {
+                    Image(systemName: "person.crop.circle")
+                        .font(.system(size: 28))
+                        .foregroundStyle(.tint)
+                        .frame(width: 44, height: 44)
+                }
+            }
+            
+            StatsSummaryCard(
+                count: viewModel.runs.count,
+                totalDuration: viewModel.totalDuration
+            )
+            
+            Button(action: { showCountdown = true }) {
+                HStack(spacing: 5) {
+                    Image(systemName: "figure.run")
+                        .font(.system(size: 24, weight: .medium))
+                        .foregroundStyle(.white)
+                    Text("MainView.workout")
+                }
+                .frame(maxWidth: .infinity)
             }
             .buttonStyle(.borderedProminent)
-            .controlSize(.large)
+            .controlSize(.extraLarge)
             .fullScreenCover(isPresented: $showCountdown) {
                 CountdownView(onFinished: {
                     showCountdown = false
                     router.push(.workout)
                 })
-            }
+            } 
             
-            StatsSummaryCard(
-                count: runs.count,
-                totalDuration: runs.reduce(0) { $0 + $1.duration}
-            )
-            
-            if (runs.isEmpty) {
+            if viewModel.isEmpty {
                 Spacer()
                 Text("mainview.noHistory")
                     .font(.body)
                     .frame(maxWidth: .infinity)
                 Spacer()
-                
             } else {
-                List {
-                    Section {
-                        ForEach(runs) { run in
-                            VStack {
-                                RecentRunsView(dateTrainingRun: "\(run.startDate.formatted(.dateTime.day().month().hour().minute()))", timeTrainingRun: "\(Duration.seconds(run.duration).formatted())",
-                                               action: { router.push(.runDetail(id: run.id)) })
-                                
-                                Divider()
+                VStack(alignment: .leading) {
+                    Text("MainView.history")
+                        .font(.headline)
+                        .padding(.top, 15)
+                        .padding(.bottom, 5)
+                    List {
+                        Section {
+                            ForEach(viewModel.runs) { run in
+                                VStack {
+                                    RecentRunsView(
+                                        dateTrainingRun: viewModel.dateText(for: run),
+                                        timeTrainingRun: viewModel.durationText(for: run),
+                                        action: { router.push(.runDetail(id: run.id)) }
+                                    )
+                                    Divider()
+                                }
+                                .listRowSeparator(.hidden)
+                                .listRowInsets(EdgeInsets())
+                                .padding(.horizontal, 15)
                             }
-                            .listRowSeparator(.hidden)
-                            .listRowInsets(EdgeInsets())
+                            .onDelete { viewModel.requestDelete(at: $0) }
                         }
-                        .onDelete{ indexSet in
-                            if let index = indexSet.first {
-                                runToDelete = runs[index]
-                            }
-                            
+                    }
+                    .cornerRadius(12)
+                    .listStyle(.plain)
+                    .scrollContentBackground(.hidden)
+                    .confirmationDialog(
+                        "mainview.delete.title",
+                        isPresented: Binding(
+                            get: { viewModel.runToDelete != nil },
+                            set: { if !$0 { viewModel.runToDelete = nil } }
+                        ),
+                        titleVisibility: .visible,
+                        presenting: viewModel.runToDelete
+                    ) { run in
+                        Button("run.delete.confirm", role: .destructive) {
+                            viewModel.confirmDelete(run)
                         }
-                    } header: {
-                        Text("MainView.history")
-                            .font(.headline)
-                            .padding(.bottom, 5)
+                        Button("run.delete.cancel", role: .cancel) { }
                     }
                     
                 }
-                .listStyle(.plain)
-                .scrollContentBackground(.hidden)
-                .confirmationDialog(
-                    "mainview.delete.title",
-                    isPresented: Binding(
-                        get: { runToDelete != nil },
-                        set: { isShown in
-                            if !isShown {
-                                runToDelete = nil
-                            }
-                        }
-                    ),
-                    titleVisibility: .visible,
-                    presenting: runToDelete
-                ) { run in
-                    Button("run.delete.confirm", role: .destructive) {
-                        do {
-                            try runRepository.delete(id: run.id)
-                            loadRuns()
-                        } catch {
-                            print(error)
-                        }
-                    }
-                    Button("run.delete.cancel", role: .cancel) { }
-                }
-                
             }
-            
-            
         }
         .frame(maxHeight: .infinity, alignment: .top)
         .padding(.horizontal, 20)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Button(action: { router.push(.profile) }) {
-                    Image(systemName: "person.crop.circle")
-                        .foregroundStyle(.tint)
-                }
-            }
-        }
-        .onAppear() {
-            loadRuns()
-        }
-    }
-    
-    
-    private func loadRuns() {
-        runs = (try? runRepository.fetchAll()) ?? []
-        print(runs.map(\.comfort))
-        print(runs.map(\.chips))
-        print(runs.map(\.note))
+        .background(Color(hex: "F5F8F6"))
+        .onAppear { viewModel.loadRuns() }
     }
 }
+

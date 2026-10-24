@@ -2,7 +2,7 @@ import SwiftUI
 
 struct NoteField: View {
     @Binding var ownThought: String
-    @FocusState.Binding var isNoteFocused: Bool 
+    @FocusState.Binding var isNoteFocused: Bool
     
     var body: some View {
         NoteCard(isHighlighted: isNoteFocused) {
@@ -12,14 +12,21 @@ struct NoteField: View {
                 .font(.subheadline)
                 .focused($isNoteFocused)
                 .overlay(
-                    Rectangle()
-                        .frame(height: 1.5)
-                        .foregroundStyle(isNoteFocused ? .blue : .clear),
-                    alignment: .bottom
+                    GeometryReader { geo in
+                        Rectangle()
+                            .frame(height: 1.0)
+                            .foregroundStyle(isNoteFocused ? Color.blue : Color.clear)
+                            .position(x: geo.size.width / 2, y: geo.size.height)
+//                        alignment: .bottom
+                    }
+//                    Rectangle()
+//                        .frame(height: 1.5)
+//                        .foregroundStyle(isNoteFocused ? .blue : .clear),
+//                    alignment: .bottom
                 )
         }
-       
+        
     }
     
-   
+    
 }

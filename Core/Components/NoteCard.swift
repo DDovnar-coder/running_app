@@ -6,8 +6,8 @@ struct NoteCard<Content: View>: View {
     let isHighlighted: Bool
     
     init(isHighlighted: Bool = false, @ViewBuilder content: () -> Content) {
-           self.isHighlighted = isHighlighted
-           self.content = content()
+        self.isHighlighted = isHighlighted
+        self.content = content()
     }
     
     var body: some View {
@@ -21,9 +21,13 @@ struct NoteCard<Content: View>: View {
         .background(.white)
         .cornerRadius(12)
         .overlay(
-            RoundedRectangle(cornerRadius: 12)
-                .stroke(isHighlighted ? .blue : Color(hex: "89938D"))
+            RoundedRectangle(cornerRadius: 12, style: .continuous)
+                .strokeBorder(
+                    isHighlighted ? Color.blue : Color(hex: "89938D").opacity(0.4),
+                    lineWidth: 1.0
+                )
         )
+        
         .animation(.default, value: isHighlighted)
     }
 }
