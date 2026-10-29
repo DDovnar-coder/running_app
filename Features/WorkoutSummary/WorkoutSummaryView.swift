@@ -7,49 +7,38 @@ struct WorkoutSummaryView: View {
     @State private var showDeleteConfirmation = false
     @FocusState private var isNoteFocused: Bool
     let name: String
-
+    
     init(runRepository: RunRepository, name: String = "Just name", runID: UUID) {
         self.name = name
         _viewModel = State(initialValue: WorkoutSummaryViewModel(repository: runRepository, runID: runID))
     }
-
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 35) {
-            HStack {
-                HStack(spacing: 15) {
-                    Image(systemName: "person.circle.fill")
-                        .font(.system(size: 50))
-                        .foregroundStyle(.secondary)
-                    VStack(alignment: .leading) {
-                        Text(name)
-                            .font(.headline)
-
-                        if let period = viewModel.periodText {
-                            Text(period)
-                                .font(.subheadline)
-                                .foregroundStyle(.secondary)
-                        }
+            HStack(spacing: 15) {
+                Image(systemName: "person.circle.fill")
+                    .font(.system(size: 50))
+                    .foregroundStyle(.secondary)
+                VStack(alignment: .leading) {
+                    Text(name)
+                        .font(.headline)
+                    
+                    if let period = viewModel.periodText {
+                        Text(period)
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
                     }
-                }
-                Spacer()
-                Button(action: {
-                    viewModel.saveRating()
-                    router.pop()
-                }) {
-                    Image(systemName: "xmark")
-                        .font(.system(size: 22, weight: .semibold))
-                        .foregroundStyle(.primary)
                 }
             }
             .contentShape(Rectangle())
             .onTapGesture { isNoteFocused = false }
-
+            
             ScrollView {
                 VStack(alignment: .leading, spacing: 25) {
                     if let run = viewModel.run {
                         WorkoutStatsCard(duration: run.duration, calories: run.calories)
                     }
-
+                    
                     VStack(alignment: .leading, spacing: 20) {
                         HStack {
                             HStack(spacing: 6) {
@@ -58,9 +47,9 @@ struct WorkoutSummaryView: View {
                             }
                             .font(.subheadline)
                             .foregroundColor(.gray)
-
+                            
                             Spacer()
-
+                            
                             HStack(spacing: 6) {
                                 Text("workoutSummaryView.comfort.hard")
                                 Text("🥵")
@@ -68,12 +57,12 @@ struct WorkoutSummaryView: View {
                             .font(.subheadline)
                             .foregroundColor(.gray)
                         }
-
+                        
                         ComfortSlider(currentStep: $viewModel.currentStep, hasRated: $viewModel.hasRated)
-
+                        
                         Text("workoutSummaryView.user-feedback")
                             .font(.body)
-
+                        
                         FlowLayout(spacing: 8) {
                             ForEach(RunChip.allCases) { chip in
                                 ChipView(
@@ -83,12 +72,23 @@ struct WorkoutSummaryView: View {
                                 )
                             }
                         }
-
+                        
                         NoteField(ownThought: $viewModel.ownThought, isNoteFocused: $isNoteFocused)
-
+                        
+                        Button(action: {
+                            viewModel.saveRating()
+                            router.pop()
+                        }) {
+                            Text("workoutSummaryView.save.workout")
+                                .frame(maxWidth: .infinity)
+                        }
+                        .tint(Color(hex: "35C866"))
+                        .buttonStyle(.borderedProminent)
+                        .controlSize(.large)
+                        
                         HStack {
                             Spacer()
-
+                            
                             if !isNoteFocused {
                                 Button(action: { showDeleteConfirmation = true }) {
                                     HStack(spacing: 8) {

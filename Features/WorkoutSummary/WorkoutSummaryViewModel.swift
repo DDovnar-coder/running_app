@@ -8,7 +8,7 @@ final class WorkoutSummaryViewModel {
     var currentStep = 0
     var hasRated = false
     var ownThought = ""
-
+    
     private var selectedChips: Set<RunChip> = []
 
     private let repository: RunRepository
@@ -18,7 +18,7 @@ final class WorkoutSummaryViewModel {
         self.repository = repository
         self.runID = runID
     }
-
+    
     // MARK: - Состояние для отображения
 
     var periodText: String? {

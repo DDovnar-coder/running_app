@@ -36,6 +36,12 @@ struct MainView: View {
                 totalDuration: viewModel.totalDuration
             )
             
+            WeeklyStatsCardView(
+                totalRunsCount: viewModel.weeklyRunsCount,
+                totalDistanceString: viewModel.weeklyTotalDistanceString,
+                chartData: viewModel.chartData
+            )
+            
             Button(action: { showCountdown = true }) {
                 HStack(spacing: 5) {
                     Image(systemName: "figure.run")
@@ -52,7 +58,7 @@ struct MainView: View {
                     showCountdown = false
                     router.push(.workout)
                 })
-            } 
+            }
             
             if viewModel.isEmpty {
                 Spacer()
