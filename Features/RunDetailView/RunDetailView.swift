@@ -1,10 +1,11 @@
 import SwiftUI
 
 struct RunDetailView: View {
-    @State private var viewModel: RunDetailViewModel
+    @Bindable var viewModel: RunDetailViewModel
+    @FocusState private var isNoteFocused: Bool
     
-    init(runRepository: RunRepository, runID: UUID) {
-        _viewModel = State(initialValue: RunDetailViewModel(runRepository: runRepository, runID: runID))
+    init(viewModel: RunDetailViewModel) {
+        self.viewModel = viewModel
     }
     
     var body: some View {
@@ -15,39 +16,92 @@ struct RunDetailView: View {
                     
                     WorkoutStatsCard(duration: run.duration, calories: run.calories)
                     
-                    if let comfort = run.comfort {
-                        ComfortSlider(
-                            currentStep: .constant(comfort - 1),
-                            hasRated: .constant(true),
-                            isInteractive: false
-                        )
-                    }
+                    sliderSection(run: run)
                     
-                    if !run.chips.isEmpty {
-                        FlowLayout(spacing: 8) {
-                            ForEach(run.chips, id: \.self) { key in
-                                ChipLabel(title: LocalizedStringKey(key), style: .archival)
-                            }
-                        }
-                    }
+                    chipsSection
                     
-                    if let note = run.note {
-                        NoteCard {
-                            Text(note)
-                                .font(.subheadline)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                        }
-                    }
+                    noteSection
                 }
             }
         }
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button(action: {
+                    if viewModel.isEditing {
+                        
+                    } else {
+                        viewModel.startEditing()
+                    }
+                }) {
+                    Image(systemName: viewModel.isEditing ? "checkmark" : "pencil")
+                }
+            }
+        }
+        .contentShape(Rectangle())
+        .onTapGesture { isNoteFocused = false }
         .padding()
         .background(Color(hex: "F5F8F6"))
+        
         
         .task {
             viewModel.fetchRun()
         }
     }
     
+    @ViewBuilder
+    private func sliderSection(run: RunModel) -> some View {
+        if viewModel.isEditing {
+            ComfortSlider(
+                currentStep: $viewModel.currentStep,
+                hasRated: $viewModel.hasRated
+            )
+        } else if run.comfort != nil {
+            ComfortSlider(
+                currentStep: .constant(viewModel.savedStep),
+                hasRated: .constant(true),
+                isInteractive: false
+            )
+        }
+    }
+    
+    @ViewBuilder
+    private var chipsSection: some View {
+        if viewModel.isEditing {
+            FlowLayout(spacing: 8) {
+                ForEach(RunChip.allCases) { chip in
+                    ChipView(
+                        title: chip.title,
+                        isSelected: viewModel.selectedChips.contains(chip),
+                        action: {
+                            viewModel.toggle(chip)
+                        }
+                    )
+                }
+            }
+        } else if !viewModel.savedChips.isEmpty {
+            FlowLayout(spacing: 8) {
+                ForEach(viewModel.savedChips) { chip in
+                    ChipLabel(title: chip.title, style: .archival)
+                }
+            }
+        }
+    }
+    
+    @ViewBuilder
+    private var noteSection: some View {
+        if viewModel.isEditing {
+            NoteField(
+                ownThought: $viewModel.ownThought,
+                isNoteFocused: $isNoteFocused,
+            )
+        } else if let note = viewModel.run?.note {
+            NoteCard {
+                Text(note)
+                    .font(.subheadline)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
+        }
+    }
 }
+
 

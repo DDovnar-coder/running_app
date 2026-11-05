@@ -6,6 +6,12 @@ final class RunDetailViewModel {
     private let runRepository: RunRepository
     private let runID: UUID
     
+    var isEditing = false
+    var currentStep = 0
+    var hasRated = false
+    var selectedChips: Set<RunChip> = []
+    var ownThought = ""
+    
     init(runRepository: RunRepository, runID: UUID) {
         self.runRepository = runRepository
         self.runID = runID
@@ -15,6 +21,36 @@ final class RunDetailViewModel {
         guard let run else { return nil }
         let date = run.startDate.formatted(.dateTime.day().month().hour().minute())
         return "\(date) — \(Duration.seconds(run.duration).formatted())"
+    }
+    
+    var savedStep: Int {
+        guard let comfort = run?.comfort else { return 0 }
+        return min(max(comfort - 1, 0), 3)
+    }
+    
+    var savedChips: [RunChip] {
+        run?.chips.compactMap(RunChip.init(rawValue:)) ?? []
+    }
+    
+    func startEditing() {
+        guard let run else { return }
+        
+        hasRated = run.comfort != nil
+        currentStep = savedStep
+        
+        selectedChips = Set(run.chips.compactMap(RunChip.init(rawValue:)))
+
+        ownThought = run.note ?? ""
+
+        isEditing = true
+    }
+    
+    func toggle(_ chip: RunChip) {
+        if selectedChips.contains(chip) {
+            selectedChips.remove(chip)
+        } else {
+            selectedChips.insert(chip)
+        }
     }
     
     func fetchRun() {

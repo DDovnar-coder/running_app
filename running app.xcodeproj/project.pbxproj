@@ -44,6 +44,11 @@
 			path = Calculations;
 			sourceTree = "<group>";
 		};
+		45DFA48B309BEC690078866E /* Models */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Models;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,6 +85,7 @@
 		45BF846F304F87A700D4AAD4 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				45DFA48B309BEC690078866E /* Models */,
 				45D965A130631AD700FB13EC /* Calculations */,
 				45BF846B304F846200D4AAD4 /* Components */,
 				45BF843D3048CEAC00D4AAD4 /* Color.swift */,
@@ -109,6 +115,7 @@
 				45BF849E3050D51700D4AAD4 /* Resources */,
 				45BF84A33050D67800D4AAD4 /* App */,
 				45D965A130631AD700FB13EC /* Calculations */,
+				45DFA48B309BEC690078866E /* Models */,
 			);
 			name = "running app";
 			packageProductDependencies = (

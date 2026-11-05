@@ -3,14 +3,14 @@ import SwiftUI
 
 struct WorkoutSummaryView: View {
     @Environment(AppRouter.self) private var router
+    
     @State private var viewModel: WorkoutSummaryViewModel
+    
     @State private var showDeleteConfirmation = false
     @FocusState private var isNoteFocused: Bool
-    let name: String
     
-    init(runRepository: RunRepository, name: String = "Just name", runID: UUID) {
-        self.name = name
-        _viewModel = State(initialValue: WorkoutSummaryViewModel(repository: runRepository, runID: runID))
+    init(viewModel: WorkoutSummaryViewModel) {
+        self.viewModel = viewModel
     }
     
     var body: some View {
@@ -20,7 +20,7 @@ struct WorkoutSummaryView: View {
                     .font(.system(size: 50))
                     .foregroundStyle(.secondary)
                 VStack(alignment: .leading) {
-                    Text(name)
+                    Text("Name")
                         .font(.headline)
                     
                     if let period = viewModel.periodText {

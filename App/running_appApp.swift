@@ -54,7 +54,11 @@ final class AppRouter {
 @main
 struct running_appApp: App {
     @State private var router = AppRouter()
-    let runRepository: RunRepository = GRDBRunRepository(database: .shared)
+    
+    private let container = AppContainer(
+        runRepository: GRDBRunRepository(database: .shared)
+    )
+    
     //    let runRepository: RunRepository
     //    let modelContainer: ModelContainer
     
@@ -74,22 +78,22 @@ struct running_appApp: App {
                     case .profileSetup:
                         DataInputView(mode: .onboarding)
                     case .main:
-                        MainView(runRepository: runRepository)
+                        MainView(viewModel: container.makeMainViewModel())
                     }
                     
                 }
                 .navigationDestination(for: AppDestination.self) { destination in
                     switch destination {
                     case .workout:
-                        ActiveWorkoutView(runRepository: runRepository)
+                        ActiveWorkoutView(viewModel: container.makeActiveWorkoutViewModel())
                     case .profile:
                         DataInputView(mode: .edit)
                     case .summary(let id):
-                        WorkoutSummaryView(runRepository: runRepository, runID: id)
+                        WorkoutSummaryView(viewModel: container.makeWorkoutSummaryViewModel(runID: id))
                     case .runDetail(let id):
-                        RunDetailView(runRepository: runRepository, runID: id)
+                        RunDetailView(viewModel: container.makeRunDetailViewModel(runID: id))
                     }
-                
+                    
                 }
             }
         }

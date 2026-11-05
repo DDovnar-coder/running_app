@@ -8,8 +8,8 @@ struct MainView: View {
     @State private var showCountdown = false
     @Environment(AppRouter.self) private var router
     
-    init(runRepository: RunRepository) {
-        _viewModel = State(initialValue: MainViewModel(repository: runRepository))
+    init(viewModel: MainViewModel) {
+        self.viewModel = viewModel
     }
     
     var body: some View {

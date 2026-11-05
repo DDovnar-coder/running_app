@@ -1,30 +1,11 @@
 import SwiftUI
 
-//enum EffortLevel: Int, CaseIterable {
-//    case easy = 1, moderate, hard, extreme
-//    
-//    var flameCount: Int { rawValue }
-//}
-
-private let phrases = [
-    "workoutSummaryView.note.lightLegs",
-    "workoutSummaryView.note.hot",
-    "workoutSummaryView.note.hardBreathing",
-    "workoutSummaryView.note.wantedToStop",
-    "workoutSummaryView.note.newPace",
-    "workoutSummaryView.note.feltStrong",
-    "workoutSummaryView.note.heavyLegs",
-    "workoutSummaryView.note.sideStitch",
-    "workoutSummaryView.note.greatWeather",
-    "workoutSummaryView.note.littleSleep"
-]
-
 struct ActiveWorkoutView: View {
     @State private var viewModel: ActiveWorkoutViewModel
     @Environment(AppRouter.self) private var router
 
-    init(runRepository: RunRepository) {
-        _viewModel = State(initialValue: ActiveWorkoutViewModel(repository: runRepository))
+    init(viewModel: ActiveWorkoutViewModel) {
+        self.viewModel = viewModel
     }
 
     var body: some View {

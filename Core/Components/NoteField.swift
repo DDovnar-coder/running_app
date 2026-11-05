@@ -17,12 +17,7 @@ struct NoteField: View {
                             .frame(height: 1.0)
                             .foregroundStyle(isNoteFocused ? Color.blue : Color.clear)
                             .position(x: geo.size.width / 2, y: geo.size.height)
-//                        alignment: .bottom
                     }
-//                    Rectangle()
-//                        .frame(height: 1.5)
-//                        .foregroundStyle(isNoteFocused ? .blue : .clear),
-//                    alignment: .bottom
                 )
         }
         
