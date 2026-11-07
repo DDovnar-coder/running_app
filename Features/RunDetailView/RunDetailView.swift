@@ -25,10 +25,17 @@ struct RunDetailView: View {
             }
         }
         .toolbar {
+            if viewModel.isEditing {
+                  ToolbarItem(placement: .navigationBarLeading) {
+                      Button(action: { viewModel.cancelEditing() }) {
+                          Image(systemName: "xmark")
+                      }
+                  }
+            }
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button(action: {
                     if viewModel.isEditing {
-                        
+                        viewModel.save()
                     } else {
                         viewModel.startEditing()
                     }
@@ -37,6 +44,8 @@ struct RunDetailView: View {
                 }
             }
         }
+        .navigationBarBackButtonHidden(viewModel.isEditing)
+
         .contentShape(Rectangle())
         .onTapGesture { isNoteFocused = false }
         .padding()

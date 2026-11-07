@@ -45,6 +45,29 @@ final class RunDetailViewModel {
         isEditing = true
     }
     
+    func cancelEditing() {
+        isEditing = false
+    }
+    
+    func save() {
+        let comfort: Int? = hasRated ? currentStep + 1 : nil
+        
+        let chips: [String] = RunChip.allCases
+            .filter { selectedChips.contains($0) }
+            .map(\.rawValue)
+        
+        let trimmedNote = ownThought.trimmingCharacters(in: .whitespacesAndNewlines)
+        let note: String? = trimmedNote.isEmpty ? nil : trimmedNote
+        
+        do {
+            try runRepository.update(id: runID, comfort: comfort, note: note, chips: chips)
+            fetchRun()
+            isEditing = false
+        } catch {
+            print("Failed to save run: \(error)")
+        }
+    }
+    
     func toggle(_ chip: RunChip) {
         if selectedChips.contains(chip) {
             selectedChips.remove(chip)
