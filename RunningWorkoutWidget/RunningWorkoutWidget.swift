@@ -76,9 +76,4 @@ struct RunningWorkoutWidget: Widget {
     }
 }
 
-#Preview(as: .systemSmall) {
-    RunningWorkoutWidget()
-} timeline: {
-    SimpleEntry(date: .now, emoji: "😀")
-    SimpleEntry(date: .now, emoji: "🤩")
-}
+

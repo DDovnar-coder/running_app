@@ -12,8 +12,6 @@ struct RunDetailView: View {
         ScrollView {
             VStack(spacing: 20) {
                 if let run = viewModel.run {
-                    if let text = viewModel.summaryText { Text(text) }
-                    
                     WorkoutStatsCard(duration: run.duration, calories: run.calories)
                     
                     sliderSection(run: run)
@@ -26,11 +24,20 @@ struct RunDetailView: View {
         }
         .toolbar {
             if viewModel.isEditing {
-                  ToolbarItem(placement: .navigationBarLeading) {
-                      Button(action: { viewModel.cancelEditing() }) {
-                          Image(systemName: "xmark")
-                      }
-                  }
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button(action: { viewModel.cancelEditing() }) {
+                        Image(systemName: "xmark")
+                    }
+                }
+            }
+            ToolbarItem(placement: .principal) {
+                if let text = viewModel.summaryText {
+                    Text(text)
+                        .font(.headline)
+                        .fontWeight(.medium)
+                        .foregroundStyle(Color.primary)
+                }
+                    
             }
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button(action: {
@@ -45,7 +52,7 @@ struct RunDetailView: View {
             }
         }
         .navigationBarBackButtonHidden(viewModel.isEditing)
-
+        
         .contentShape(Rectangle())
         .onTapGesture { isNoteFocused = false }
         .padding()

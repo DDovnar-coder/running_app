@@ -69,5 +69,11 @@ struct WorkoutStatsCard: View {
         .padding(24)
         .background(Color.white)
         .cornerRadius(12)
+        .shadow(
+            color: Color(red: 0.15, green: 0.25, blue: 0.20).opacity(0.08),
+            radius: 14,
+            x: 0,
+            y: 3
+        )
     }
 }

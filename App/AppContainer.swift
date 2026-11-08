@@ -3,9 +3,11 @@ import SwiftUI
 @MainActor
 final class AppContainer {
     private let runRepository: RunRepository
+    private let liveActivityManager: LiveActivityManager
     
     init(runRepository: RunRepository) {
         self.runRepository = runRepository
+        self.liveActivityManager = LiveActivityManager()
     }
     
     func makeMainViewModel() -> MainViewModel {
@@ -13,7 +15,7 @@ final class AppContainer {
     }
     
     func makeActiveWorkoutViewModel() -> ActiveWorkoutViewModel {
-        ActiveWorkoutViewModel(repository: runRepository)
+        ActiveWorkoutViewModel(repository: runRepository, liveActivityManager: liveActivityManager)
     }
     
     func makeWorkoutSummaryViewModel(runID: UUID) -> WorkoutSummaryViewModel {

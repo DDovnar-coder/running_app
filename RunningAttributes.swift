@@ -1,8 +1,13 @@
-//
-//  RunningAttributes.swift
-//  running app
-//
-//  Created by DDovnar on 07.11.2026.
-//
+import ActivityKit
+import SwiftUI
 
-import Foundation
+struct RunningAttributes: ActivityAttributes {
+    
+    public struct ContentState: Codable, Hashable {
+        var distance: Double
+        var pace: String
+        var kcal: Int
+    }
+    
+    var startTime: Date
+}

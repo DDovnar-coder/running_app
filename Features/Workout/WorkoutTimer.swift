@@ -10,6 +10,8 @@ import Observation
 
 @Observable
 class WorkoutTimer {
+    var onTick: (() -> Void)?
+    
     private var startTime: Date?
     private var pausedAt: Date?
     private var pausedDuration: TimeInterval = 0
@@ -28,10 +30,12 @@ class WorkoutTimer {
         }
     }
     
+    
     private func tick() {
         guard let startTime else { return }
         
         elapsedTime = Date().timeIntervalSince(startTime) - pausedDuration
+        onTick?()
     }
     
     func pause() {

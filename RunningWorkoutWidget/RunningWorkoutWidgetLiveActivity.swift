@@ -1,80 +1,71 @@
-//
-//  RunningWorkoutWidgetLiveActivity.swift
-//  RunningWorkoutWidget
-//
-//  Created by DDovnar on 07.11.2026.
-//
-
-import ActivityKit
 import WidgetKit
 import SwiftUI
 
-struct RunningWorkoutWidgetAttributes: ActivityAttributes {
-    public struct ContentState: Codable, Hashable {
-        // Dynamic stateful properties about your activity go here!
-        var emoji: String
-    }
-
-    // Fixed non-changing properties about your activity go here!
-    var name: String
-}
-
 struct RunningWorkoutWidgetLiveActivity: Widget {
     var body: some WidgetConfiguration {
-        ActivityConfiguration(for: RunningWorkoutWidgetAttributes.self) { context in
-            // Lock screen/banner UI goes here
-            VStack {
-                Text("Hello \(context.state.emoji)")
+        ActivityConfiguration(for: RunningAttributes.self) { context in
+            HStack {
+                VStack(alignment: .leading, spacing: 4) {
+                    
+                    Text("liveActivity.activeWorkout")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                    
+                    Text(context.attributes.startTime, style: .timer)
+                        .font(.title)
+                        .bold()
+                        .foregroundStyle(.blue)
+                }
+                
+                Spacer()
+                
+                VStack(alignment: .trailing, spacing: 4) {
+                    
+                    Text("liveActivity.distance \(context.state.distance, specifier: "%.2f")")
+                        .font(.title2)
+                        .bold()
+                    
+                    Text("liveActivity.pace \(context.state.pace)")
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                }
             }
-            .activityBackgroundTint(Color.cyan)
-            .activitySystemActionForegroundColor(Color.black)
-
+            .padding()
         } dynamicIsland: { context in
             DynamicIsland {
-                // Expanded UI goes here.  Compose the expanded UI through
-                // various regions, like leading/trailing/center/bottom
                 DynamicIslandExpandedRegion(.leading) {
-                    Text("Leading")
+                    Image(systemName: "figure.run")
+                        .font(.title)
+                        .padding(.leading, 8)
                 }
                 DynamicIslandExpandedRegion(.trailing) {
-                    Text("Trailing")
+                    Text(context.attributes.startTime, style: .timer)
+                        .font(.title3)
+                        .foregroundStyle(.blue)
+                        .offset(x: 57)
                 }
                 DynamicIslandExpandedRegion(.bottom) {
-                    Text("Bottom \(context.state.emoji)")
-                    // more content
+                    HStack {
+                        Text("liveActivity.distance \(context.state.distance, specifier: "%.2f")")
+                            .bold()
+                        
+                        Spacer()
+                        
+                        Text("liveActivity.calories \(context.state.kcal)")
+                    }
+                    .padding(.horizontal, 10)
+                    
                 }
+                
             } compactLeading: {
-                Text("L")
+                Image(systemName: "figure.run")
             } compactTrailing: {
-                Text("T \(context.state.emoji)")
+                Text(context.attributes.startTime, style: .timer)
+                    .offset(x: 57)
+                    .foregroundStyle(.blue)
             } minimal: {
-                Text(context.state.emoji)
+                Image(systemName: "figure.run")
             }
-            .widgetURL(URL(string: "http://www.apple.com"))
-            .keylineTint(Color.red)
         }
     }
-}
-
-extension RunningWorkoutWidgetAttributes {
-    fileprivate static var preview: RunningWorkoutWidgetAttributes {
-        RunningWorkoutWidgetAttributes(name: "World")
-    }
-}
-
-extension RunningWorkoutWidgetAttributes.ContentState {
-    fileprivate static var smiley: RunningWorkoutWidgetAttributes.ContentState {
-        RunningWorkoutWidgetAttributes.ContentState(emoji: "😀")
-     }
-     
-     fileprivate static var starEyes: RunningWorkoutWidgetAttributes.ContentState {
-         RunningWorkoutWidgetAttributes.ContentState(emoji: "🤩")
-     }
-}
-
-#Preview("Notification", as: .content, using: RunningWorkoutWidgetAttributes.preview) {
-   RunningWorkoutWidgetLiveActivity()
-} contentStates: {
-    RunningWorkoutWidgetAttributes.ContentState.smiley
-    RunningWorkoutWidgetAttributes.ContentState.starEyes
 }

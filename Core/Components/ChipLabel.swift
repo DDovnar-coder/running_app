@@ -29,7 +29,7 @@ struct ChipLabel: View {
         switch style {
         case .selected:   return Color(hex: "1A5333")
         case .unselected: return Color(hex: "4A4A4A")
-        case .archival:   return Color(hex: "333333")
+        case .archival:   return Color(hex: "39865A")
         }
     }
     
@@ -37,7 +37,7 @@ struct ChipLabel: View {
         switch style {
         case .selected:   return Color(hex: "E2F5E9")
         case .unselected: return .white
-        case .archival:   return Color(hex: "F2F2F7")
+        case .archival:   return Color(hex: "E4F4EB")
         }
     }
     

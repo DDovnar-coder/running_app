@@ -10,13 +10,65 @@
 		45667FBC304757C4009F4449 /* GRDB in Frameworks */ = {isa = PBXBuildFile; productRef = 45667FBB304757C4009F4449 /* GRDB */; };
 		45BF84583048CEAC00D4AAD4 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45BF843D3048CEAC00D4AAD4 /* Color.swift */; };
 		45BF84993050CFB900D4AAD4 /* AppDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45BF848E3050CFB900D4AAD4 /* AppDatabase.swift */; };
+		45DFA493309FA5230078866E /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45DFA492309FA5220078866E /* WidgetKit.framework */; };
+		45DFA495309FA5230078866E /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45DFA494309FA5230078866E /* SwiftUI.framework */; };
+		45DFA4A4309FA5240078866E /* RunningWorkoutWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 45DFA490309FA5220078866E /* RunningWorkoutWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		45DFA4AD309FB2580078866E /* RunningAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45DFA4AC309FB2580078866E /* RunningAttributes.swift */; };
+		45DFA4AE309FB2580078866E /* RunningAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45DFA4AC309FB2580078866E /* RunningAttributes.swift */; };
+		45DFA4B3309FE5940078866E /* LiveActivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45DFA4B2309FE5940078866E /* LiveActivityManager.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		45DFA4A2309FA5240078866E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 452FDD6930227B6A00735951 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 45DFA48F309FA5220078866E;
+			remoteInfo = RunningWorkoutWidgetExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		45DFA4A9309FA5240078866E /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				45DFA4A4309FA5240078866E /* RunningWorkoutWidgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		452FDD7130227B6A00735951 /* running app.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "running app.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		45BF843D3048CEAC00D4AAD4 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		45BF848E3050CFB900D4AAD4 /* AppDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDatabase.swift; sourceTree = "<group>"; };
+		45DFA490309FA5220078866E /* RunningWorkoutWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = RunningWorkoutWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		45DFA492309FA5220078866E /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		45DFA494309FA5230078866E /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		45DFA4AC309FB2580078866E /* RunningAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunningAttributes.swift; sourceTree = "<group>"; };
+		45DFA4B2309FE5940078866E /* LiveActivityManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveActivityManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		45DFA4A5309FA5240078866E /* Exceptions for "RunningWorkoutWidget" folder in "RunningWorkoutWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 45DFA48F309FA5220078866E /* RunningWorkoutWidgetExtension */;
+		};
+		45DFA4B530A12C690078866E /* Exceptions for "Resources" folder in "RunningWorkoutWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Localizable.xcstrings,
+			);
+			target = 45DFA48F309FA5220078866E /* RunningWorkoutWidgetExtension */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		45BF846A304F7BA000D4AAD4 /* Features */ = {
@@ -31,6 +83,9 @@
 		};
 		45BF849E3050D51700D4AAD4 /* Resources */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				45DFA4B530A12C690078866E /* Exceptions for "Resources" folder in "RunningWorkoutWidgetExtension" target */,
+			);
 			path = Resources;
 			sourceTree = "<group>";
 		};
@@ -49,6 +104,14 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		45DFA496309FA5230078866E /* RunningWorkoutWidget */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				45DFA4A5309FA5240078866E /* Exceptions for "RunningWorkoutWidget" folder in "RunningWorkoutWidgetExtension" target */,
+			);
+			path = RunningWorkoutWidget;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,14 +123,26 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		45DFA48D309FA5220078866E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				45DFA495309FA5230078866E /* SwiftUI.framework in Frameworks */,
+				45DFA493309FA5230078866E /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		452FDD6830227B6A00735951 = {
 			isa = PBXGroup;
 			children = (
+				45DFA4AC309FB2580078866E /* RunningAttributes.swift */,
 				45BF846F304F87A700D4AAD4 /* Core */,
 				45BF846A304F7BA000D4AAD4 /* Features */,
+				45DFA496309FA5230078866E /* RunningWorkoutWidget */,
+				45DFA491309FA5220078866E /* Frameworks */,
 				452FDD7230227B6A00735951 /* Products */,
 				45BF849E3050D51700D4AAD4 /* Resources */,
 				45BF84A33050D67800D4AAD4 /* App */,
@@ -78,6 +153,7 @@
 			isa = PBXGroup;
 			children = (
 				452FDD7130227B6A00735951 /* running app.app */,
+				45DFA490309FA5220078866E /* RunningWorkoutWidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -90,8 +166,18 @@
 				45BF846B304F846200D4AAD4 /* Components */,
 				45BF843D3048CEAC00D4AAD4 /* Color.swift */,
 				45BF848E3050CFB900D4AAD4 /* AppDatabase.swift */,
+				45DFA4B2309FE5940078866E /* LiveActivityManager.swift */,
 			);
 			path = Core;
+			sourceTree = "<group>";
+		};
+		45DFA491309FA5220078866E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				45DFA492309FA5220078866E /* WidgetKit.framework */,
+				45DFA494309FA5230078866E /* SwiftUI.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -104,10 +190,12 @@
 				452FDD6D30227B6A00735951 /* Sources */,
 				452FDD6E30227B6A00735951 /* Frameworks */,
 				452FDD6F30227B6A00735951 /* Resources */,
+				45DFA4A9309FA5240078866E /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				45DFA4A3309FA5240078866E /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				45BF846A304F7BA000D4AAD4 /* Features */,
@@ -125,6 +213,28 @@
 			productReference = 452FDD7130227B6A00735951 /* running app.app */;
 			productType = "com.apple.product-type.application";
 		};
+		45DFA48F309FA5220078866E /* RunningWorkoutWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 45DFA4A6309FA5240078866E /* Build configuration list for PBXNativeTarget "RunningWorkoutWidgetExtension" */;
+			buildPhases = (
+				45DFA48C309FA5220078866E /* Sources */,
+				45DFA48D309FA5220078866E /* Frameworks */,
+				45DFA48E309FA5220078866E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				45DFA496309FA5230078866E /* RunningWorkoutWidget */,
+			);
+			name = RunningWorkoutWidgetExtension;
+			packageProductDependencies = (
+			);
+			productName = RunningWorkoutWidgetExtension;
+			productReference = 45DFA490309FA5220078866E /* RunningWorkoutWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -136,6 +246,9 @@
 				LastUpgradeCheck = 2660;
 				TargetAttributes = {
 					452FDD7030227B6A00735951 = {
+						CreatedOnToolsVersion = 26.6;
+					};
+					45DFA48F309FA5220078866E = {
 						CreatedOnToolsVersion = 26.6;
 					};
 				};
@@ -159,12 +272,20 @@
 			projectRoot = "";
 			targets = (
 				452FDD7030227B6A00735951 /* running app */,
+				45DFA48F309FA5220078866E /* RunningWorkoutWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		452FDD6F30227B6A00735951 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		45DFA48E309FA5220078866E /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -178,12 +299,30 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				45DFA4AD309FB2580078866E /* RunningAttributes.swift in Sources */,
+				45DFA4B3309FE5940078866E /* LiveActivityManager.swift in Sources */,
 				45BF84583048CEAC00D4AAD4 /* Color.swift in Sources */,
 				45BF84993050CFB900D4AAD4 /* AppDatabase.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		45DFA48C309FA5220078866E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				45DFA4AE309FB2580078866E /* RunningAttributes.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		45DFA4A3309FA5240078866E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 45DFA48F309FA5220078866E /* RunningWorkoutWidgetExtension */;
+			targetProxy = 45DFA4A2309FA5240078866E /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		452FDD7A30227B6B00735951 /* Debug */ = {
@@ -316,6 +455,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -347,6 +487,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -362,6 +503,64 @@
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		45DFA4A7309FA5240078866E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = RunningWorkoutWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = RunningWorkoutWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "-23.running-app.RunningWorkoutWidget";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		45DFA4A8309FA5240078866E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = RunningWorkoutWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = RunningWorkoutWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "-23.running-app.RunningWorkoutWidget";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
@@ -386,6 +585,15 @@
 			buildConfigurations = (
 				452FDD7D30227B6B00735951 /* Debug */,
 				452FDD7E30227B6B00735951 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		45DFA4A6309FA5240078866E /* Build configuration list for PBXNativeTarget "RunningWorkoutWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				45DFA4A7309FA5240078866E /* Debug */,
+				45DFA4A8309FA5240078866E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
