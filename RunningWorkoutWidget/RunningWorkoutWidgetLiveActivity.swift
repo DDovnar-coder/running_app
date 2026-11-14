@@ -42,7 +42,7 @@ struct RunningWorkoutWidgetLiveActivity: Widget {
                     Text(context.attributes.startTime, style: .timer)
                         .font(.title3)
                         .foregroundStyle(.blue)
-                        .offset(x: 57)
+                        .frame(width: 45, alignment: .trailing)
                 }
                 DynamicIslandExpandedRegion(.bottom) {
                     HStack {
@@ -60,8 +60,9 @@ struct RunningWorkoutWidgetLiveActivity: Widget {
             } compactLeading: {
                 Image(systemName: "figure.run")
             } compactTrailing: {
-                Text(context.attributes.startTime, style: .timer)
-                    .offset(x: 57)
+                Text(timerInterval: context.attributes.startTime...Date.distantFuture, countsDown: false)
+                    .monospacedDigit()
+                    .frame(width: 45, alignment: .trailing)
                     .foregroundStyle(.blue)
             } minimal: {
                 Image(systemName: "figure.run")

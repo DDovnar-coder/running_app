@@ -2,12 +2,14 @@ import SwiftUI
 
 @MainActor
 final class AppContainer {
-    private let runRepository: RunRepository
+    private let runRepository: RunRepository    
     private let liveActivityManager: LiveActivityManager
+    private let userDefaults: UserDefaults
     
     init(runRepository: RunRepository) {
         self.runRepository = runRepository
         self.liveActivityManager = LiveActivityManager()
+        self.userDefaults = .standard
     }
     
     func makeMainViewModel() -> MainViewModel {

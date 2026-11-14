@@ -3,8 +3,6 @@ import SwiftUI
 import Charts
 
 struct WeeklyStatsCardView: View {
-
-    // Входные параметры для карточки
     let totalRunsCount: Int
     let totalDistanceString: String
     let chartData: [(id: Date, dayName: String, distance: Double)]
@@ -14,8 +12,6 @@ struct WeeklyStatsCardView: View {
 
     var body: some View {
         HStack(alignment: .center, spacing: 16) {
-
-            // Левая текстовая панель
             VStack(alignment: .leading, spacing: 4) {
                 Text("This week")
                     .font(.subheadline)
