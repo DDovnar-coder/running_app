@@ -11,7 +11,7 @@ final class DataInputViewModel {
     let mode: DataInputMode
     private let defaults: UserDefaults
     
-    init(mode: DataInputMode, defaults: UserDefaults = .standard) {
+    init(mode: DataInputMode, defaults: UserDefaults) {
         self.mode = mode
         self.defaults = defaults
         age = defaults.string(forKey: "user_age") ?? ""

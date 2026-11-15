@@ -14,8 +14,8 @@ struct DataInputView: View {
     @FocusState private var focusedField: Field?
     @Environment(AppRouter.self) var router
 
-    init(mode: DataInputMode) {
-        _viewModel = State(initialValue: DataInputViewModel(mode: mode))
+    init(viewModel: DataInputViewModel) {
+        self.viewModel = viewModel
     }
 
     var body: some View {
