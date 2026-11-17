@@ -47,6 +47,6 @@ struct ActiveWorkoutView: View {
         }
         .toolbar(.hidden, for: .navigationBar)
         .padding(25)
-        .onAppear { viewModel.start() }
+        .onAppear { viewModel.startOrRestore() }
     }
 }

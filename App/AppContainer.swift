@@ -48,14 +48,18 @@ final class AppContainer {
     private let runRepository: RunRepository
     private let liveActivityManager: LiveActivityManager
     private let userDefaults: UserDefaults
+    private let workoutStore: WorkoutSessionStore
     
     let router: AppRouter
+    
+    let defaults = UserDefaults.standard
     
     init(runRepository: RunRepository) {
         self.runRepository = runRepository
         self.liveActivityManager = LiveActivityManager()
-        self.userDefaults = .standard
-        self.router = AppRouter(defaults: .standard)
+        self.userDefaults = defaults
+        self.workoutStore = WorkoutSessionStore(defaults: defaults)
+        self.router = AppRouter(defaults: defaults)
     }
     
     func makeMainViewModel() -> MainViewModel {
@@ -70,7 +74,8 @@ final class AppContainer {
     }
     
     func makeActiveWorkoutViewModel() -> ActiveWorkoutViewModel {
-        ActiveWorkoutViewModel(repository: runRepository, liveActivityManager: liveActivityManager)
+        ActiveWorkoutViewModel(repository: runRepository, defaults: userDefaults, liveActivityManager: liveActivityManager, store: workoutStore)
+        
     }
     
     func makeWorkoutSummaryViewModel(runID: UUID) -> WorkoutSummaryViewModel {
@@ -79,5 +84,13 @@ final class AppContainer {
     
     func makeRunDetailViewModel(runID: UUID) -> RunDetailViewModel {
         RunDetailViewModel(runRepository: runRepository, runID: runID)
+    }
+    
+    
+    func openActiveWorkoutIfNeeded() {
+        guard router.phase == .main,
+              router.path.isEmpty,
+              workoutStore.load() != nil else { return }
+        router.push(.workout)
     }
 }

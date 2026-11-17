@@ -2,8 +2,6 @@ import SwiftUI
 
 @Observable
 final class ActiveWorkoutViewModel {
-    private(set) var isPaused = false
-    
     private let workoutTimer = WorkoutTimer()
     private let repository: RunRepository
     private let defaults: UserDefaults
@@ -11,10 +9,18 @@ final class ActiveWorkoutViewModel {
     private let liveActivityManager: LiveActivityManager
     private var lastLiveActivityUpdate: Date?
     
-    init(repository: RunRepository, defaults: UserDefaults = .standard, liveActivityManager: LiveActivityManager) {
+    private(set) var session: WorkoutSession?
+    private let store: WorkoutSessionStore
+    
+    var isPaused: Bool {
+         session?.pausedAt != nil
+    }
+    
+    init(repository: RunRepository, defaults: UserDefaults, liveActivityManager: LiveActivityManager, store: WorkoutSessionStore) {
         self.repository = repository
         self.defaults = defaults
         self.liveActivityManager = liveActivityManager
+        self.store = store
         
         workoutTimer.onTick = { [weak self] in
             self?.updateLiveActivityIfNeeded()
@@ -22,26 +28,31 @@ final class ActiveWorkoutViewModel {
     }
     
     // MARK: - Состояние для отображения
-    
     var elapsedText: String {
-        Duration.seconds(workoutTimer.elapsedTime).formatted()
+        _ = workoutTimer.tickCount
+        return Duration.seconds(session?.elapsed() ?? 0).formatted()
     }
-    
     // MARK: - Действия
     
     func start() {
         lastLiveActivityUpdate = nil
+        let newSession = WorkoutSession(startTime: .now)
+        session = newSession
+        store.save(newSession)
         workoutTimer.start()
-        liveActivityManager.startWorkout()
+        liveActivityManager.startWorkout(session: newSession)
     }
     
     func togglePause() {
         if isPaused {
-            workoutTimer.resume()
+            session?.resume()
+            workoutTimer.start()
         } else {
-            workoutTimer.pause()
+            session?.pause()
+            workoutTimer.stop()
         }
-        isPaused.toggle()
+        
+        if let session { store.save(session) }
     }
     
     // Сохраняет забег и останавливает таймер.
@@ -49,9 +60,25 @@ final class ActiveWorkoutViewModel {
     func finish() -> UUID? {
         let id = saveRun()
         workoutTimer.stop()
-        
+        session = nil
+        store.clear()
         liveActivityManager.stopWorkout()
         return id
+    }
+    
+    func startOrRestore() {
+        guard session == nil else { return }
+        if let saved = store.load() {
+            restore(saved)
+        } else {
+            start()
+        }
+    }
+
+    private func restore(_ saved: WorkoutSession) {
+        session = saved
+        if !isPaused { workoutTimer.start() }
+        liveActivityManager.restoreOrStart(session: saved)
     }
     
     // MARK: - Приватное
@@ -60,7 +87,7 @@ final class ActiveWorkoutViewModel {
         let weightString = defaults.string(forKey: "user_weight") ?? ""
         let weightKg = Double(weightString) ?? 0
         
-        let calories = calculateCalories(duration: workoutTimer.elapsedTime, weightKg: weightKg)
+        let calories = calculateCalories(duration: session?.elapsed() ?? 0, weightKg: weightKg)
         
         return calories
     }
@@ -78,18 +105,27 @@ final class ActiveWorkoutViewModel {
     }
     
     private func updateLiveActivity() {
+        guard let session else { return }
         liveActivityManager.updateWorkout(
+            session: session,
             distance: 0.0,
             pace: "--:--",
             kcal: Int(countCalories().rounded())
         )
     }
+  
+    func restoreIfNeeded() {
+        guard session == nil, let saved = store.load() else { return }
+        session = saved
+        if !isPaused { workoutTimer.start() }
+        liveActivityManager.restoreOrStart(session: saved)
+    }
     
     private func saveRun() -> UUID? {
-        guard let start = workoutTimer.workoutStartTimer else { return nil }
+        guard let session else { return nil }
         let run = RunModel(
-            startDate: start,
-            duration: workoutTimer.elapsedTime,
+            startDate: session.startTime,
+            duration: session.elapsed(),
             calories: Int(countCalories().rounded())
         )
         try? repository.save(run)

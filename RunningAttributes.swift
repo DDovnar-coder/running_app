@@ -7,7 +7,10 @@ struct RunningAttributes: ActivityAttributes {
         var distance: Double
         var pace: String
         var kcal: Int
+        var timerStart: Date
+        var frozenElapsed: TimeInterval?
     }
     
     var startTime: Date
 }
+

@@ -18,12 +18,6 @@ enum AppPhase: String, Hashable {
 
 @main
 struct running_appApp: App {
-//    @State private var router = AppContainer()
-//
-//    private let container = AppContainer(
-//        runRepository: GRDBRunRepository(database: .shared)
-//    )
-    
     private let container: AppContainer
     
     @State private var router: AppRouter
@@ -73,6 +67,9 @@ struct running_appApp: App {
                     }
                     
                 }
+            }
+            .task {
+                container.openActiveWorkoutIfNeeded()
             }
         }
         .environment(router)

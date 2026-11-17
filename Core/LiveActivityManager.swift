@@ -4,36 +4,52 @@ import ActivityKit
 final class LiveActivityManager {
     private var currentActivity: Activity<RunningAttributes>?
     
-    func startWorkout() {
+    func startWorkout(session: WorkoutSession) {
         guard ActivityAuthorizationInfo().areActivitiesEnabled else { return }
         
-        let attributes = RunningAttributes(startTime: Date())
-        
-        let initialState = RunningAttributes.ContentState(distance: 0.0, pace: "--:--", kcal: 0)
+        let attributes = RunningAttributes(startTime: session.startTime)
+        let state = makeState(session: session, distance: 0, pace: "--:--", kcal: 0)
+        let content = ActivityContent(state: state, staleDate: nil)
         
         do {
-            let content = ActivityContent(state: initialState, staleDate: nil)
-            
             currentActivity = try Activity.request(attributes: attributes, content: content)
         } catch {
             print("Не удалось запустить Live Activity: \(error.localizedDescription)")
-
+            
         }
     }
     
-    func updateWorkout(distance: Double, pace: String, kcal: Int) {
-        let updatedState = RunningAttributes.ContentState(distance: distance, pace: pace, kcal: kcal)
-        let content = ActivityContent(state: updatedState, staleDate: nil)
-        
-        Task {
-            await currentActivity?.update(content)
+    func restoreOrStart(session: WorkoutSession) {
+        if let existing = Activity<RunningAttributes>.activities.first {
+            currentActivity = existing
+        } else {
+            startWorkout(session: session)
         }
+    }
+    
+    func updateWorkout(session: WorkoutSession, distance: Double, pace: String, kcal: Int) {
+        let state = makeState(session: session, distance: distance, pace: pace, kcal: kcal)
+        let content = ActivityContent(state: state, staleDate: nil)
+        Task { await currentActivity?.update(content) }
     }
     
     func stopWorkout() {
-          Task {
-              await currentActivity?.end(nil, dismissalPolicy: .immediate)
-              currentActivity = nil
-          }
-      }
+        currentActivity = nil
+        Task {
+            for activity in Activity<RunningAttributes>.activities {
+                await activity.end(nil, dismissalPolicy: .immediate)
+            }
+        }
+    }
+    
+    private func makeState(session: WorkoutSession, distance: Double, pace: String, kcal: Int)
+    -> RunningAttributes.ContentState {
+        RunningAttributes.ContentState(
+            distance: distance,
+            pace: pace,
+            kcal: kcal,
+            timerStart: session.timerStart,
+            frozenElapsed: session.pausedAt != nil ? session.elapsed() : nil
+        )
+    }
 }
