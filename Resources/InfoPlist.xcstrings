@@ -29,6 +29,40 @@
           }
         }
       }
+    },
+    "NSHealthShareUsageDescription" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We need access to read your workouts, heart rate, and distance to track your running progress and personalize training stats."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Приложению нужен доступ для чтения данных о ваших тренировках, пульсе и дистанции, чтобы отслеживать прогресс в беге."
+          }
+        }
+      }
+    },
+    "NSHealthUpdateUsageDescription" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We need access to save your completed runs, distance, and burned calories directly to Apple Health."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Приложению нужен доступ для сохранения ваших завершенных пробежек, дистанции и сожженных калорий в приложение «Здоровье»."
+          }
+        }
+      }
     }
   },
   "version" : "1.2"

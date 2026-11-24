@@ -1,8 +1,12 @@
-//
-//  HealthProfile.swift
-//  running app
-//
-//  Created by DDovnar on 22.11.2026.
-//
+struct HealthProfile {
+    let age: Int?
+    let height: Double?
+    let weight: Double?
+    let biologicalSex: BiologicalSex?
+}
 
-import Foundation
+enum BiologicalSex {
+    case male
+    case female
+    case other
+}

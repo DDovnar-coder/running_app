@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		454108C830AFA5630029EFA7 /* HealthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454108C730AFA5630029EFA7 /* HealthService.swift */; };
+		454108CA30B379760029EFA7 /* HealthProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454108C930B379760029EFA7 /* HealthProfile.swift */; };
+		454108CC30B37EE80029EFA7 /* HealthKitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454108CB30B37EE80029EFA7 /* HealthKitService.swift */; };
 		45667FBC304757C4009F4449 /* GRDB in Frameworks */ = {isa = PBXBuildFile; productRef = 45667FBB304757C4009F4449 /* GRDB */; };
 		45BF84583048CEAC00D4AAD4 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45BF843D3048CEAC00D4AAD4 /* Color.swift */; };
 		45BF84993050CFB900D4AAD4 /* AppDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45BF848E3050CFB900D4AAD4 /* AppDatabase.swift */; };
@@ -44,6 +47,10 @@
 
 /* Begin PBXFileReference section */
 		452FDD7130227B6A00735951 /* running app.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "running app.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		454108C630AFA2780029EFA7 /* running app.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "running app.entitlements"; sourceTree = "<group>"; };
+		454108C730AFA5630029EFA7 /* HealthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthService.swift; sourceTree = "<group>"; };
+		454108C930B379760029EFA7 /* HealthProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthProfile.swift; sourceTree = "<group>"; };
+		454108CB30B37EE80029EFA7 /* HealthKitService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitService.swift; sourceTree = "<group>"; };
 		45BF843D3048CEAC00D4AAD4 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		45BF848E3050CFB900D4AAD4 /* AppDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDatabase.swift; sourceTree = "<group>"; };
 		45DFA490309FA5220078866E /* RunningWorkoutWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = RunningWorkoutWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -138,6 +145,7 @@
 		452FDD6830227B6A00735951 = {
 			isa = PBXGroup;
 			children = (
+				454108C630AFA2780029EFA7 /* running app.entitlements */,
 				45DFA4AC309FB2580078866E /* RunningAttributes.swift */,
 				45BF846F304F87A700D4AAD4 /* Core */,
 				45BF846A304F7BA000D4AAD4 /* Features */,
@@ -167,6 +175,9 @@
 				45BF843D3048CEAC00D4AAD4 /* Color.swift */,
 				45BF848E3050CFB900D4AAD4 /* AppDatabase.swift */,
 				45DFA4B2309FE5940078866E /* LiveActivityManager.swift */,
+				454108C730AFA5630029EFA7 /* HealthService.swift */,
+				454108C930B379760029EFA7 /* HealthProfile.swift */,
+				454108CB30B37EE80029EFA7 /* HealthKitService.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -300,6 +311,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				45DFA4AD309FB2580078866E /* RunningAttributes.swift in Sources */,
+				454108C830AFA5630029EFA7 /* HealthService.swift in Sources */,
+				454108CA30B379760029EFA7 /* HealthProfile.swift in Sources */,
+				454108CC30B37EE80029EFA7 /* HealthKitService.swift in Sources */,
 				45DFA4B3309FE5940078866E /* LiveActivityManager.swift in Sources */,
 				45BF84583048CEAC00D4AAD4 /* Color.swift in Sources */,
 				45BF84993050CFB900D4AAD4 /* AppDatabase.swift in Sources */,
@@ -451,11 +465,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "running app.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = KK5GQTHH56;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "We need access to save your completed runs, distance, and burned calories directly to Apple Health.";
 				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -484,11 +500,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "running app.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = KK5GQTHH56;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "We need access to save your completed runs, distance, and burned calories directly to Apple Health.";
 				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
