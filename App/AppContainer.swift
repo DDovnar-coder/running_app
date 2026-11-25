@@ -49,6 +49,7 @@ final class AppContainer {
     private let liveActivityManager: LiveActivityManager
     private let userDefaults: UserDefaults
     private let workoutStore: WorkoutSessionStore
+    private let healthStore: HealthService
     
     let router: AppRouter
     
@@ -60,6 +61,7 @@ final class AppContainer {
         self.userDefaults = defaults
         self.workoutStore = WorkoutSessionStore(defaults: defaults)
         self.router = AppRouter(defaults: defaults)
+        self.healthStore = HealthKitService()
     }
     
     func makeMainViewModel() -> MainViewModel {
@@ -69,7 +71,8 @@ final class AppContainer {
     func makeProfileViewModel(mode: DataInputMode) -> DataInputViewModel {
         DataInputViewModel(
             mode: mode,
-            defaults: userDefaults
+            defaults: userDefaults,
+            healthService: healthStore
         )
     }
     

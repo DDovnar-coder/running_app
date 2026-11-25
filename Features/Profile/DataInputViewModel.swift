@@ -8,12 +8,19 @@ final class DataInputViewModel {
     var gender = ""
     var didAttemptSave = false
     
+    var isLoadingHealthData = false
+    var healthDataError: String?
+    
     let mode: DataInputMode
     private let defaults: UserDefaults
+    private let healthService: HealthService
     
-    init(mode: DataInputMode, defaults: UserDefaults) {
+    
+    init(mode: DataInputMode, defaults: UserDefaults, healthService: HealthService) {
         self.mode = mode
         self.defaults = defaults
+        self.healthService = healthService
+        
         age = defaults.string(forKey: "user_age") ?? ""
         height = defaults.string(forKey: "user_height") ?? ""
         weight = defaults.string(forKey: "user_weight") ?? ""
@@ -60,5 +67,49 @@ final class DataInputViewModel {
         defaults.set(weight, forKey: "user_weight")
         defaults.set(gender, forKey: "user_gender")
         return true
+    }
+    
+    func loadHealthData() async {
+        guard mode == .onboarding else {
+            return
+        }
+        
+        isLoadingHealthData = true
+        healthDataError = nil
+        
+        defer {
+            isLoadingHealthData = false
+        }
+        
+        do {
+            try await healthService.requestAccess()
+            
+            let profile = try await healthService.fetchProfile()
+            
+            if age.isEmpty, let value = profile.age {
+                age = String(value)
+            }
+            
+            if height.isEmpty, let value = profile.height {
+                height = String(Int(value))
+            }
+            
+            if weight.isEmpty, let value = profile.weight {
+                weight = String(Int(value))
+            }
+            
+            if gender.isEmpty, let value = profile.biologicalSex {
+                switch value {
+                case .male:
+                    gender = "male"
+                case .female:
+                    gender = "female"
+                case .other:
+                    break
+                }
+            }
+        } catch {
+            healthDataError = error.localizedDescription
+        }
     }
 }

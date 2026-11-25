@@ -56,10 +56,14 @@ struct DataInputView: View {
             .controlSize(.large)
         }
         .navigationBarBackButtonHidden(true)
-        .onAppear {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                focusedField = viewModel.firstEmptyField
-            }
+        .task {
+//            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+//                focusedField = viewModel.firstEmptyField
+//            }
+            
+            await viewModel.loadHealthData()
+            
+            focusedField = viewModel.firstEmptyField
         }
     }
 }
