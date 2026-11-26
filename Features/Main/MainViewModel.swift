@@ -6,9 +6,7 @@ final class MainViewModel {
     var runToDelete: RunModel?
     
     private let repository: RunRepository
-    
-    let maxChartDistance: Double = 10.0 // max высота линии графика
-    
+        
     init(repository: RunRepository) {
         self.repository = repository
     }

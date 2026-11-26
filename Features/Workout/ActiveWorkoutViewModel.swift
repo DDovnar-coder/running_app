@@ -113,13 +113,6 @@ final class ActiveWorkoutViewModel {
             kcal: Int(countCalories().rounded())
         )
     }
-  
-    func restoreIfNeeded() {
-        guard session == nil, let saved = store.load() else { return }
-        session = saved
-        if !isPaused { workoutTimer.start() }
-        liveActivityManager.restoreOrStart(session: saved)
-    }
     
     private func saveRun() -> UUID? {
         guard let session else { return nil }
