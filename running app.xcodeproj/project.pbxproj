@@ -466,6 +466,7 @@
 				DEVELOPMENT_TEAM = KK5GQTHH56;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "We need access to read your age, height, weight, and biological sex from Apple Health to pre-fill your profile and calculate burned calories.\nWe need access to read your age, height, weight, and biological sex from Apple Health to pre-fill your profile and calculate burned calories.\nWe need access to read your age, height, weight, and biological sex from Apple Health to pre-fill your profile and calculate burned calories.\n";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "We need access to save your completed runs, distance, and burned calories directly to Apple Health.";
 				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -501,6 +502,7 @@
 				DEVELOPMENT_TEAM = KK5GQTHH56;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "We need access to read your age, height, weight, and biological sex from Apple Health to pre-fill your profile and calculate burned calories.\nWe need access to read your age, height, weight, and biological sex from Apple Health to pre-fill your profile and calculate burned calories.\nWe need access to read your age, height, weight, and biological sex from Apple Health to pre-fill your profile and calculate burned calories.\n";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "We need access to save your completed runs, distance, and burned calories directly to Apple Health.";
 				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
