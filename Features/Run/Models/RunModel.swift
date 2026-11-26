@@ -1,5 +1,4 @@
 import GRDB
-import SwiftData
 import SwiftUI
 
 struct RunModel: Identifiable {

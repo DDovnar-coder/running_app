@@ -1,5 +1,4 @@
 import SwiftUI
-import SwiftData
 
 enum AppDestination: Hashable {
     case workout
@@ -13,8 +12,6 @@ enum AppPhase: String, Hashable {
     case profileSetup
     case main
 }
-
-
 
 @main
 struct running_appApp: App {
@@ -30,15 +27,6 @@ struct running_appApp: App {
         self.container = container
         _router = State(initialValue: container.router)
     }
-    
-    //    let runRepository: RunRepository
-    //    let modelContainer: ModelContainer
-    
-    //    init() {
-    //        let container = try! ModelContainer(for: Run.self)
-    //        self.modelContainer = container
-    //        self.runRepository = SwiftDataRunRepository(modelContext: container.mainContext)
-    //    }
     
     var body: some Scene {
         WindowGroup {

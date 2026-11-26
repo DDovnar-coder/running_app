@@ -1,7 +1,4 @@
 import SwiftUI
-import SwiftData
-
-import SwiftUI
 
 struct MainView: View {
     @State private var viewModel: MainViewModel
