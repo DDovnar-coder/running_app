@@ -10,6 +10,7 @@ import SwiftUI
 struct HoldToStopButton: View {
     @State private var isPressing: Bool = false
     @State private var progress: CGFloat = 0.0
+    @State private var holdTask: Task<Void, Never>?
     
     private let duration: TimeInterval = 1.5
     
@@ -46,10 +47,13 @@ struct HoldToStopButton: View {
                         isPressing = true
                         progress = 1.0
                         
-                        DispatchQueue.main.asyncAfter(deadline: .now() + duration) {
-                            if isPressing {
-                                handleSuccess()
+                        holdTask = Task {
+                            do {
+                                try await Task.sleep(for: .seconds(duration))
+                            } catch {
+                                return
                             }
+                            handleSuccess()
                         }
                     }
                 }.onEnded{ _ in
@@ -59,20 +63,23 @@ struct HoldToStopButton: View {
     }
     
     private func handleSuccess() {
-          resetPressing()
-          
-          // Тактильный отклик (вибрация) при успешном завершении
-          let generator = UINotificationFeedbackGenerator()
-          generator.notificationOccurred(.success)
-          
-          onComplete()
-      }
+        resetPressing()
+        
+        // Тактильный отклик (вибрация) при успешном завершении
+        let generator = UINotificationFeedbackGenerator()
+        generator.notificationOccurred(.success)
+        
+        onComplete()
+    }
     
     private func resetPressing() {
-            isPressing = false
-            progress = 0.0
-        }
-
+        holdTask?.cancel()
+        holdTask = nil
+        
+        isPressing = false
+        progress = 0.0
+    }
+    
     struct StaticButtonStyle: ButtonStyle {
         func makeBody(configuration: Configuration) -> some View {
             configuration.label
