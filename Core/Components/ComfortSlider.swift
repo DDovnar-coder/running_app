@@ -61,7 +61,7 @@ struct ComfortSlider: View {
             )
         }
         .frame(height: 44)
-        .allowsTightening(isInteractive)
+        .allowsHitTesting(isInteractive)
     }
     
     private func triggerHapticFeedback() {
