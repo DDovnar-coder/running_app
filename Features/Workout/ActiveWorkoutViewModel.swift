@@ -116,12 +116,21 @@ final class ActiveWorkoutViewModel {
     
     private func saveRun() -> UUID? {
         guard let session else { return nil }
+        
         let run = RunModel(
             startDate: session.startTime,
             duration: session.elapsed(),
             calories: Int(countCalories().rounded())
         )
-        try? repository.save(run)
-        return run.id
+        
+        do {
+            try repository.save(run)
+            
+            return run.id
+        } catch {
+            print("Ошибка сохранения записи: \(error)")
+        }
+        
+        return nil
     }
 }
