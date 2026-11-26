@@ -13,11 +13,11 @@ struct DataInputView: View {
     @State private var viewModel: DataInputViewModel
     @FocusState private var focusedField: Field?
     @Environment(AppRouter.self) var router
-
+    
     init(viewModel: DataInputViewModel) {
         self.viewModel = viewModel
     }
-
+    
     var body: some View {
         VStack {
             ScrollView {
@@ -25,7 +25,14 @@ struct DataInputView: View {
                     Text("datainput.description")
                         .font(.body)
                         .foregroundColor(.secondary)
-
+                    
+                    if let error = viewModel.healthDataError {
+                        Text(error)
+                            .font(.footnote)
+                            .foregroundStyle(.red)
+//                            .padding(.top, 5)
+                    }
+                    
                     VStack(alignment: .leading, spacing: 20) {
                         InputCard(title: "datainput.age.title", placeholder: "18", isFocused: $focusedField, field: .age, name: $viewModel.age, errorMessage: viewModel.didAttemptSave ? viewModel.ageError : nil)
                         InputCard(title: "datainput.height.title", placeholder: "175", isFocused: $focusedField, field: .height, name: $viewModel.height, errorMessage: viewModel.didAttemptSave ? viewModel.heightError : nil)
@@ -38,7 +45,7 @@ struct DataInputView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
             .navigationTitle("datainput.title")
-
+            
             Button {
                 if viewModel.save() {
                     switch viewModel.mode {
@@ -57,10 +64,6 @@ struct DataInputView: View {
         }
         .navigationBarBackButtonHidden(true)
         .task {
-//            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-//                focusedField = viewModel.firstEmptyField
-//            }
-            
             await viewModel.loadHealthData()
             
             focusedField = viewModel.firstEmptyField

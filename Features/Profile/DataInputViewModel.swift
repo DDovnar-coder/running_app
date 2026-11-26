@@ -8,12 +8,14 @@ final class DataInputViewModel {
     var gender = ""
     var didAttemptSave = false
     
-    var isLoadingHealthData = false
-    var healthDataError: String?
-    
     let mode: DataInputMode
+    
+    var isLoadingHealthData = false
+    var healthDataError: LocalizedStringKey?
+    
     private let defaults: UserDefaults
     private let healthService: HealthService
+    private var didLoadHealthData = false
     
     
     init(mode: DataInputMode, defaults: UserDefaults, healthService: HealthService) {
@@ -70,7 +72,9 @@ final class DataInputViewModel {
     }
     
     func loadHealthData() async {
-        guard mode == .onboarding else {
+        guard mode == .onboarding,
+              !didLoadHealthData,
+              !isLoadingHealthData else {
             return
         }
         
@@ -108,8 +112,10 @@ final class DataInputViewModel {
                     break
                 }
             }
+            
+            didLoadHealthData = true
         } catch {
-            healthDataError = error.localizedDescription
+            healthDataError = "datainput.health.error"
         }
     }
 }
